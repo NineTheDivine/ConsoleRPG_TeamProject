@@ -1,13 +1,13 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\code\\Csharp\\ConsoleRPG_TeamProject\\ConsoleRPG_Team\\",
+  "WorkspaceRootPath": "C:\\Users\\kheam\\OneDrive\\\uBB38\uC11C\\GitHub\\ConsoleRPG_TeamProject\\ConsoleRPG_Team\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5D0A857A-9926-4430-8392-648638A7AD45}|ConsoleRPG_Team.csproj|d:\\code\\csharp\\consolerpg_teamproject\\consolerpg_team\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{5D0A857A-9926-4430-8392-648638A7AD45}|ConsoleRPG_Team.csproj|c:\\users\\kheam\\onedrive\\\uBB38\uC11C\\github\\consolerpg_teamproject\\consolerpg_team\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5D0A857A-9926-4430-8392-648638A7AD45}|ConsoleRPG_Team.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5D0A857A-9926-4430-8392-648638A7AD45}|ConsoleRPG_Team.csproj|d:\\code\\csharp\\consolerpg_teamproject\\consolerpg_team\\consolerpg_team.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "AbsoluteMoniker": "D:0:0:{5D0A857A-9926-4430-8392-648638A7AD45}|ConsoleRPG_Team.csproj|c:\\users\\kheam\\onedrive\\\uBB38\uC11C\\github\\consolerpg_teamproject\\consolerpg_team\\consolerpg_team.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{5D0A857A-9926-4430-8392-648638A7AD45}|ConsoleRPG_Team.csproj|solutionrelative:consolerpg_team.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     }
   ],
@@ -21,44 +21,33 @@
           "SelectedChildIndex": 2,
           "Children": [
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "ConsoleRPG_Team",
-              "DocumentMoniker": "D:\\code\\Csharp\\ConsoleRPG_TeamProject\\ConsoleRPG_Team\\ConsoleRPG_Team.csproj",
+              "Title": "ConsoleRPG_Team.csproj",
+              "DocumentMoniker": "C:\\Users\\kheam\\OneDrive\\\uBB38\uC11C\\GitHub\\ConsoleRPG_TeamProject\\ConsoleRPG_Team\\ConsoleRPG_Team.csproj",
               "RelativeDocumentMoniker": "ConsoleRPG_Team.csproj",
-              "ToolTip": "D:\\code\\Csharp\\ConsoleRPG_TeamProject\\ConsoleRPG_Team\\ConsoleRPG_Team.csproj",
+              "ToolTip": "C:\\Users\\kheam\\OneDrive\\\uBB38\uC11C\\GitHub\\ConsoleRPG_TeamProject\\ConsoleRPG_Team\\ConsoleRPG_Team.csproj",
               "RelativeToolTip": "ConsoleRPG_Team.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-07-14T08:21:06.698Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+              "WhenOpened": "2025-07-14T08:21:06.698Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Program.cs",
-              "DocumentMoniker": "D:\\code\\Csharp\\ConsoleRPG_TeamProject\\ConsoleRPG_Team\\Program.cs",
+              "DocumentMoniker": "C:\\Users\\kheam\\OneDrive\\\uBB38\uC11C\\GitHub\\ConsoleRPG_TeamProject\\ConsoleRPG_Team\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "D:\\code\\Csharp\\ConsoleRPG_TeamProject\\ConsoleRPG_Team\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAADwvwYAAAAvAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\kheam\\OneDrive\\\uBB38\uC11C\\GitHub\\ConsoleRPG_TeamProject\\ConsoleRPG_Team\\Program.cs*",
+              "RelativeToolTip": "Program.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-14T08:20:52.809Z",
               "EditorCaption": ""
-            }
-          ]
-        },
-        {
-          "DockedHeight": 126,
-          "SelectedChildIndex": -1,
-          "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
             }
           ]
         }
