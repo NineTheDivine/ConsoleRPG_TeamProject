@@ -138,11 +138,6 @@ namespace ConsoleRPG_Team
             player.Attack(enemy);
             player.Attack(enemy);
             player.Attack(enemy);
-
-
-
-
-
         }
     }
 }
