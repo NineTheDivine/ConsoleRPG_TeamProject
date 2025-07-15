@@ -17,8 +17,7 @@ namespace ConsoleRPG_Team.Scenes
         }
         public override SceneType OnSceneEnter()
         {
-            AskInput(0, 0);
-            int? input = AskInput(0, 0);
+            int? input = AskInput(0, 0, this.inputstream);
             switch (input)
             {
                 case 0:

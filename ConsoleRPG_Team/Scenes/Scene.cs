@@ -21,16 +21,16 @@ namespace ConsoleRPG_Team.Scenes
     {
         protected string[] inputstream = new string[0];
         public abstract SceneType OnSceneEnter();
-        protected virtual int? AskInput(int min, int max)
+        protected virtual int? AskInput(int min, int max, string[] stringinputs, string ask = "원하시는 행동을 입력해주세요.")
         {
             int? input = null;
             do
             {
                 Console.WriteLine();
-                foreach(string str in  this.inputstream)
+                foreach(string str in stringinputs)
                     Console.WriteLine(str);
                 Console.WriteLine();
-                Console.WriteLine("원하시는 행동을 입력해주세요.");
+                Console.WriteLine(ask);
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write(">> ");
                 string s = Console.ReadLine();
