@@ -12,8 +12,8 @@ namespace ConsoleRPG_Team
     {
         static SceneType current = SceneType.None;
         static int? prevHealth = null;
-
-        static void OnPlay()
+        public static Player playerInstance = new Player();
+        public static void OnPlay()
         {
             do
             {

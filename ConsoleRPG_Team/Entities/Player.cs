@@ -8,6 +8,7 @@ namespace ConsoleRPG_Team.Entities
 {
     internal class Player : Entity
     {
+        public int? beforeHealth { get; set; } = null;
         public int def { get; protected set; }
         public int gold { get; protected set; }
 
@@ -16,9 +17,11 @@ namespace ConsoleRPG_Team.Entities
             name = "주인공"; // 추후 입력해서 설정
             level = 1;
             atk = 5;
+            def = 5;
             health = 100;
-            beforeHealth = 0;
+            beforeHealth = null;
             maxHealth = 100;
+            gold = 1500;
             isDead = false;
         }
     }

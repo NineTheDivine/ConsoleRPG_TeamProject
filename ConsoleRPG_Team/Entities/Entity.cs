@@ -12,7 +12,6 @@ namespace ConsoleRPG_Team.Entities
         public int level { get; set; }
         public int atk { get; protected set; }
         public int health { get; protected set; }
-        public int beforeHealth { get; protected set; }
         public int maxHealth { get; protected set; }
         public bool isDead = false;
 
@@ -23,6 +22,8 @@ namespace ConsoleRPG_Team.Entities
 
         public  void Attack(Entity target)
         {
+            if (isDead)
+                return;
             int randomAtk = AtkDiff();
             target.health -= randomAtk;
             Console.WriteLine($"{target.name}의 체력을 {randomAtk} 깎았습니다.");
