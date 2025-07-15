@@ -30,7 +30,7 @@ namespace ConsoleRPG_Team.Entities
         {
             int spawnCount = random.Next(minCount , maxCount + 1);
 
-            var enmies = new List<Enemy>();
+            List<Enemy> enmies = new List<Enemy>();
             {
                 enmies.Add(new Enemy("미니언", 1, 10));
                 enmies.Add(new Enemy("공허충", 2, 15));
@@ -46,7 +46,7 @@ namespace ConsoleRPG_Team.Entities
                     break;
                 }
 
-                var selected = enmies[random.Next(enmies.Count)];
+                Enemy selected = enmies[random.Next(enmies.Count)];
                 spawnEnemies.Add(selected);   
             }
         }
