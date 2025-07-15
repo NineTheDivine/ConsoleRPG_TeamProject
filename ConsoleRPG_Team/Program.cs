@@ -2,6 +2,7 @@
 ﻿using System;
 using ConsoleRPG_Team.Scenes;
 using ConsoleRPG_Team.Entities;
+using ConsoleRPG_Team.Store_Item;
 
 namespace ConsoleRPG_Team
 {
@@ -10,14 +11,9 @@ namespace ConsoleRPG_Team
     {
         static void Main(string[] args)
         {
-            EnemyWave wave = new EnemyWave(1, 3, 1, 5);
-            wave.SpawnEnemyWave();
-
-            Console.WriteLine("=== 웨이브 적 목록 ===");
-            foreach (var enemy in wave.spawnEnemies)
-            {
-                Console.WriteLine($"적 이름: {enemy.name}, 레벨: {enemy.level}, 체력: {enemy.GetHealth()}");
-            }
+            Store store = new Store();
+            store.Buy();
+            
         }
     }
 }
