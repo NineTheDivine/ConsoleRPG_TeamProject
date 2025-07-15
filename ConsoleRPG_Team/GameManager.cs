@@ -26,7 +26,7 @@ namespace ConsoleRPG_Team
                     case SceneType.StatusScene:
                         current = new StatusScene().OnSceneEnter(); break;
                     case SceneType.BattleScene:
-                        current = new BattleScene(/* new EnemyWave() */).OnSceneEnter(); break;
+                        current = new BattleScene(new EnemyWave(1, 3, 2, 3)).OnSceneEnter(); break;
                     case SceneType.BattleEndScene:
                         current = new BattleEndScene().OnSceneEnter(); break;
                     case SceneType.GameOverScene:

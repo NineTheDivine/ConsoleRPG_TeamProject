@@ -11,11 +11,20 @@ namespace ConsoleRPG_Team.Entities
         //protected int enemyID;
         //protected string Reward;
 
-        public Enemy(string name, int level, int health)
+        public Enemy(string name, int level, int health, int atk)
         {
             this.name = name;
             this.level = level;
             this.health = health;
+            this.atk = atk;
+        }
+
+        public Enemy(Enemy e)
+        {
+            this.name = e.name;
+            this.level = e.level;
+            this.health = e.health;
+            this.atk = e.atk;
         }
     }
     
