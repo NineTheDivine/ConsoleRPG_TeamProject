@@ -8,7 +8,6 @@ namespace ConsoleRPG_Team.Entities
 {
     internal class EnemyWave
     {
-        
         int minLevel;
         int maxLevel;
         int minCount;
@@ -24,6 +23,7 @@ namespace ConsoleRPG_Team.Entities
             this.maxLevel = maxLevel;
             this.minCount = minCount;
             this.maxCount = maxCount;
+            SpawnEnemyWave();
         }
 
         public void SpawnEnemyWave()
@@ -32,9 +32,9 @@ namespace ConsoleRPG_Team.Entities
 
             List<Enemy> enmies = new List<Enemy>();
             {
-                enmies.Add(new Enemy("미니언", 1, 10));
-                enmies.Add(new Enemy("공허충", 2, 15));
-                enmies.Add(new Enemy("대포미니언", 3, 20));
+                enmies.Add(new Enemy("미니언", 1, 10, 1));
+                enmies.Add(new Enemy("공허충", 2, 15, 3));
+                enmies.Add(new Enemy("대포미니언", 3, 20, 5));
             };
 
             enmies = enmies.Where(enemy => enemy.level >= minLevel && enemy.level <= maxLevel).ToList();
@@ -46,7 +46,7 @@ namespace ConsoleRPG_Team.Entities
                     break;
                 }
 
-                Enemy selected = enmies[random.Next(enmies.Count)];
+                Enemy selected = new Enemy(enmies[random.Next(enmies.Count)]);
                 spawnEnemies.Add(selected);   
             }
         }
