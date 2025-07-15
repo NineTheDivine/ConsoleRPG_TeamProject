@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleRPG_Team.Entity;
+using System;
 
 namespace ConsoleRPG_Team
 {
