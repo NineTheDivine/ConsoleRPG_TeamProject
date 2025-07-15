@@ -4,13 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleRPG_Team.Scene
+namespace ConsoleRPG_Team.Scenes
 {
+    enum SceneType 
+    {
+        Quit = -1,
+        None = 0,
+        StartScene = 1,
+        BattleScene,
+        BattleEndScene,
+        GameOverScene,
+        StatusScene
+    };
+
     internal abstract class Scene
     {
-
         protected string[] inputstream = new string[0];
-        public abstract void OnSceneEnter();
+        public abstract SceneType OnSceneEnter();
         protected virtual int? AskInput(int min, int max)
         {
             int? input = null;
