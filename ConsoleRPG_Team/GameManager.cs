@@ -32,6 +32,9 @@ namespace ConsoleRPG_Team
                     case SceneType.GameOverScene:
                         current = new GameOverScene().OnSceneEnter(); break;
 
+
+
+
                     case SceneType.Quit:
                         return;
                 }

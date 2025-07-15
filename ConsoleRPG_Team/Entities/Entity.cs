@@ -16,6 +16,9 @@ namespace ConsoleRPG_Team.Entities
         public int maxHealth { get; protected set; }
         public bool isDead = false;
 
+
+        
+
         Random random = new Random();
 
         public  void Attack(Entity target)
