@@ -8,8 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entity\" />
-    <Folder Include="Scene\" />
+    <Folder Include="Entities\" />
+    <Folder Include="Scenes\" />
   </ItemGroup>
-
 </Project>
