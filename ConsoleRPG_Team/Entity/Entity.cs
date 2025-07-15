@@ -15,12 +15,19 @@ namespace ConsoleRPG_Team.Entity
         protected int maxHealth;
         protected bool isDead = false;
 
+        Random random = new Random();
+
         //public abstract void OnTurn();
 
-        public abstract void Attack(Player player);
-        public abstract void Attack(Enemy enemy);
+        public abstract void Attack(Entity target);
 
-        public abstract int AtkDiff();
+        public int AtkDiff()
+        {
+            int randomAtk = random.Next(Atk - (Atk / 10), Atk + (Atk / 10) + 1);
+
+            return randomAtk;
+        }
+        
 
         //public abstract void OnDamageDelt();
 
