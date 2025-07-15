@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ConsoleRPG_Team.Scenes;
-using ConsoleRPG_Team.Entity;
+using ConsoleRPG_Team.Entities;
 
 namespace ConsoleRPG_Team
 {
