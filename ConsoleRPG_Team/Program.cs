@@ -1,5 +1,7 @@
-﻿using ConsoleRPG_Team.Entities;
-using System;
+
+﻿using System;
+using ConsoleRPG_Team.Scenes;
+using ConsoleRPG_Team.Entities;
 
 namespace ConsoleRPG_Team
 {
