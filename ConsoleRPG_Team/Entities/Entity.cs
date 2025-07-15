@@ -4,20 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleRPG_Team.Entity
+namespace ConsoleRPG_Team.Entities
 {
     internal abstract class Entity
     {
         public string name;
-        protected int level;
+        public int level;
         private int atk = 10;
         private int health;
         protected int maxHealth;
         protected bool isDead = false;
 
         Random random = new Random();
-
-        //public abstract void OnTurn();
 
         public abstract void Attack(Entity target);
 
@@ -28,8 +26,6 @@ namespace ConsoleRPG_Team.Entity
             return randomAtk;
         }
         
-
-        //public abstract void OnDamageDelt();
 
         public int Atk
         {

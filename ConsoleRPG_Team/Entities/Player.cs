@@ -4,19 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleRPG_Team.Entity
+namespace ConsoleRPG_Team.Entities
 {
-    internal class Enemy : Entity
+    internal class Player : Entity
     {
-        private int enemyID;
-        private string Reward;
+        private int def;
+        private int gold;
 
-        Random random = new Random();
+        
 
-        public Enemy()
+        public Player()
         {
-            name = "미니언";
+            name = "주인공";
         }
+
         public override void Attack(Entity target)
         {
             int randomAtk = AtkDiff();
@@ -24,5 +25,4 @@ namespace ConsoleRPG_Team.Entity
             Console.WriteLine($"{target.name}의 체력을 {randomAtk} 깎았습니다.");
         }
     }
-    
 }
