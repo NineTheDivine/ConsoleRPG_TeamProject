@@ -22,6 +22,7 @@ namespace ConsoleRPG_Team.Scenes
         {
             this.enemyWave = ew;
             this._enemyCount = enemyWave.spawnEnemies.Count;
+            GameManager.waveEnemyCount = this._enemyCount;
             this.inputstream = new string[1] { "1. 공격" };
         }
 
@@ -90,7 +91,7 @@ namespace ConsoleRPG_Team.Scenes
                                 enemyindex++;
                             }
 
-                            target = AskInput(0, _enemyCount, askstream, "대상을 선택해주세요.");
+                            target = AskInput(0, (int)GameManager.waveEnemyCount, askstream, "대상을 선택해주세요.");
                             if (target != null && target != 0 && enemyWave.spawnEnemies[(int)target - 1].isDead)
                             {
                                 Console.ForegroundColor = ConsoleColor.Red;

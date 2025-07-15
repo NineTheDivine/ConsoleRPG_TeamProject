@@ -11,8 +11,8 @@ namespace ConsoleRPG_Team
     internal static class GameManager
     {
         static SceneType current = SceneType.None;
-        static int? prevHealth = null;
         public static Player playerInstance = new Player();
+        public static int? waveEnemyCount = null;
         public static void OnPlay()
         {
             do
