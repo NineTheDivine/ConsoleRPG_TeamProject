@@ -75,8 +75,12 @@ namespace ConsoleRPG_Team.Entities
             Console.WriteLine("-----------------------------------------------------------------------------");
             foreach (Item item in GameManager.playerInstance.inventory)
             {
-                string equipState = item.item_isEquiped ? "[E]" : "  ";
-                Console.WriteLine($"|{i}| {equipState} | {item.item_Name,-15} | {item.item_Pow,5} | {item.item_Description,-23} |");
+                string equipState = item.item_isEquiped ? "[E]" : "  ";        
+                Console.Write($"|{i}| {equipState} |");
+                Console.ForegroundColor = item.GetGradeColor();
+                Console.Write($" {item.item_Name,-15}");
+                Console.ResetColor();
+                Console.WriteLine($" | {item.item_Pow,5} | {item.item_Description,-23} |");
                 i++;
             }
             Console.WriteLine("=============================================================================");
