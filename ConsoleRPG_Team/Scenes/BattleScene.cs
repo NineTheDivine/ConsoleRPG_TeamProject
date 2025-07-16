@@ -118,6 +118,7 @@ namespace ConsoleRPG_Team.Scenes
                                 _enemyCount--;
                                 this.enemyWave.spawnEnemies[(int)target - 1].GiveExp();
                                 GameManager.playerInstance.getExp += this.enemyWave.spawnEnemies[(int)target - 1].exp;
+                                this.enemyWave.spawnEnemies[(int)target - 1].DropItem();
                             }
                             while (AskInput(0, 0, nextstream, "") == null)
                                 continue;
