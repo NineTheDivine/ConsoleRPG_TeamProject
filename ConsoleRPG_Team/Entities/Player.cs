@@ -33,6 +33,17 @@ namespace ConsoleRPG_Team.Entities
             isDead = false;
         }
 
+        public override int AtkDiff()
+        {
+            int criticalChance = random.Next(1, 101);
+            if(criticalChance >= 15)
+            {
+                Console.WriteLine("치명타!");
+                return (int)(base.AtkDiff() * 1.6f);
+            }
+            return base.AtkDiff();
+        }
+
         public void ShowInventory()
         {
             int i = 1;

@@ -20,7 +20,7 @@ namespace ConsoleRPG_Team.Entities
 
         
 
-        Random random = new Random();
+        protected Random random = new Random();
 
         public  void Attack(Entity target)
         {
@@ -38,7 +38,7 @@ namespace ConsoleRPG_Team.Entities
             Console.WriteLine($"{target.name}의 체력을 {randomAtk} 깎았습니다.");
         }
 
-        public int AtkDiff()
+        public virtual int AtkDiff()
         {
             int randomAtk = random.Next(atk - (atk / 10), atk + (atk / 10) + 1); //현재 int라서 ATK가 10 이하면 랜덤이 안됨
 
