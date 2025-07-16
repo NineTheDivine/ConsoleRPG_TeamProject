@@ -15,6 +15,8 @@ namespace ConsoleRPG_Team.Entities
         public int maxHealth { get; protected set; }
         public bool isDead { get; protected set; } = false;
 
+        public int exp { get; set; }
+
 
         
 
@@ -30,6 +32,7 @@ namespace ConsoleRPG_Team.Entities
             {
                 target.health = 0;
                 target.isDead = true;
+
             }
             Console.WriteLine("{0:5} 의 공격!", this.name);
             Console.WriteLine($"{target.name}의 체력을 {randomAtk} 깎았습니다.");

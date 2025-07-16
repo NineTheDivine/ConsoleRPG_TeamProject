@@ -10,6 +10,7 @@ namespace ConsoleRPG_Team.Entities
     {
         //protected int enemyID;
         //protected string Reward;
+        public bool isEXP = false;
 
         public Enemy(string name, int level, int health, int atk)
         {
@@ -17,6 +18,7 @@ namespace ConsoleRPG_Team.Entities
             this.level = level;
             this.health = health;
             this.atk = atk;
+            this.exp = level * 3;
         }
 
         public Enemy(Enemy e)
@@ -25,7 +27,18 @@ namespace ConsoleRPG_Team.Entities
             this.level = e.level;
             this.health = e.health;
             this.atk = e.atk;
+            this.exp = e.exp;
+            this.isEXP = false;
+            this.isDead = false;
+        }
+
+        public void GiveExp()
+        {
+            if(this.isDead && !this.isEXP)
+            {
+                GameManager.playerInstance.exp += exp;
+                isEXP = true;
+            }
         }
     }
-    
 }
