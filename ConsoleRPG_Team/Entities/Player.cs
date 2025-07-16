@@ -6,6 +6,14 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
+public enum PlayerClass
+{
+    None,
+    Warrior,
+    Mage,
+    Rogue
+}
+
 namespace ConsoleRPG_Team.Entities
 {
     internal class Player : Entity
@@ -14,9 +22,15 @@ namespace ConsoleRPG_Team.Entities
         public int def { get; protected set; }
         public int gold { get; set; }
 
-        public int getExp {  get; set; }
+        public int getExp { get; set; }
+
+        bool chooseClass = false;
+
+        public PlayerClass playerClass { get; protected set; }
 
         public List<Item> inventory = new List<Item>();
+
+
 
         public Player()
         {
@@ -26,6 +40,7 @@ namespace ConsoleRPG_Team.Entities
             def = 5;
             health = 100;
             beforeHealth = null;
+            playerClass = PlayerClass.None;
             maxHealth = 100;
             gold = 1500;
             exp = 0;
@@ -36,7 +51,7 @@ namespace ConsoleRPG_Team.Entities
         public override int AtkDiff()
         {
             int criticalChance = random.Next(1, 101);
-            if(criticalChance >= 15)
+            if (criticalChance >= 15)
             {
                 Console.WriteLine("치명타!");
                 return (int)(base.AtkDiff() * 1.6f);
@@ -63,7 +78,7 @@ namespace ConsoleRPG_Team.Entities
 
         public void EquipItem()
         {
-            while(true)
+            while (true)
             {
                 ShowInventory();
 
@@ -81,8 +96,26 @@ namespace ConsoleRPG_Team.Entities
                     continue;
                 }
 
-                    inventory[select - 1].item_isEquiped = !inventory[select - 1].item_isEquiped;
 
+
+                if (inventory[select - 1].item_Type == "consumable")
+                {
+                    UseableItem item = inventory[select - 1] as UseableItem;
+                    if (item != null)
+                    {
+                        item.use(this);
+                        inventory.RemoveAt(select - 1);
+                        Console.WriteLine($"{item.item_Name}을(를) 사용했습니다.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("사용할수 없다");
+                    }
+                }
+                else
+                {
+                    inventory[select - 1].item_isEquiped = !inventory[select - 1].item_isEquiped;
+                }
             }
         }
 
@@ -90,13 +123,53 @@ namespace ConsoleRPG_Team.Entities
         {
             int[] levelExp = { 0, 10, 35, 65, 100 };
 
-            while(level < levelExp.Length && exp >= levelExp[level])
+            while (level < levelExp.Length && exp >= levelExp[level])
             {
                 exp -= levelExp[level];
                 level++;
                 atk += 1;
                 def += 1;
                 Console.WriteLine($"레벨업! 현재레벨{level} 공격력 방어력이 + 1 되었습니다.");
+            }
+
+            if (playerClass == PlayerClass.None && level >= 3)
+            {
+                while (!chooseClass)
+
+                {
+                    Console.WriteLine("전직할수 있습니다 어떤 직업으로 하시겠습니까?.");
+                    Console.WriteLine("1.전사 2.마법사 3.도적");
+
+                    int select = 0;
+                    bool isSelect = int.TryParse(Console.ReadLine(), out select);
+
+                    if (!isSelect)
+                    {
+                        Console.WriteLine("숫자로 선택해주세요.");
+                        continue;
+                    }
+
+                    switch (select)
+                    {
+                        case 1:
+                            playerClass = PlayerClass.Warrior;
+                            chooseClass = true;
+                            break;
+                        case 2:
+                            playerClass = PlayerClass.Mage;
+                            chooseClass = true;
+                            break;
+                        case 3:
+                            playerClass = PlayerClass.Rogue;
+                            chooseClass = true;
+                            break;
+                        default:
+                            Console.WriteLine("당신은 아무 직업도 선택하지 않았다..");
+                            chooseClass = true;
+                            break;
+                    }
+                }
+                
             }
         }
     }

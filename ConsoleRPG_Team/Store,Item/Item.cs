@@ -30,8 +30,8 @@ namespace ConsoleRPG_Team.Store_Item
             new Item(6, "철제 방패", 5, "튼튼한 철로 만든 방패.", 120, "armor"),
             new Item(7, "마법 망토", 2, "마법 저항을 올려주는 망토.", 250, "armor"),
             new Item(8, "용의 비늘", 10, "용의 비늘로 만든 갑옷", 500, "armor"),
-            new Item(9, "체력 포션", 0, "체력을 50 회복시켜준다.", 30, "consumable"),
-            new Item(10, "마나 포션", 0, "마나를 30 회복시켜준다.", 30, "consumable"),
+            new UseableItem(9, "체력 포션", "체력을 50 회복시켜준다.", 30, "consumable", 50, 0),
+            new UseableItem(10, "마나 포션", "마나를 30 회복시켜준다.", 30, "consumable", 0, 30),
         };
 
         public Item(int ID, string name, int pow, string description, int price, string type)

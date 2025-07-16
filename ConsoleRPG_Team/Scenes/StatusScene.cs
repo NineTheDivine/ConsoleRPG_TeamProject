@@ -26,6 +26,7 @@ namespace ConsoleRPG_Team.Scenes
 
             Console.WriteLine("Lv. {0:D2}", GameManager.playerInstance.level);
             Console.WriteLine("{0:5} ( {0:4} )", /*need to be fixed*/ GameManager.playerInstance.name);
+            Console.WriteLine($"직업 :{GameManager.playerInstance.playerClass}");
             Console.WriteLine("공격력 : {0:-3}", GameManager.playerInstance.atk.ToString());
             Console.WriteLine("방어력 : {0:-3}", GameManager.playerInstance.def.ToString());
             Console.WriteLine("체 력 : {0:-3} / {1:-3}", GameManager.playerInstance.health.ToString(), GameManager.playerInstance.maxHealth.ToString());
