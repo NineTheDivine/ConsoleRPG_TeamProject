@@ -22,7 +22,16 @@ namespace ConsoleRPG_Team.Entities
         public int def { get; protected set; }
         public int gold { get; set; }
 
+        public int evasionChance { get; set; } // 회피확률
+
+        public int criticalChance { get; set; } //치명타확률
+
         public int getExp { get; set; }
+
+        private int bonusAtk {  get; set; }
+        private int bonusDef { get; set; }
+
+        
 
         bool chooseClass = false;
 
@@ -46,6 +55,8 @@ namespace ConsoleRPG_Team.Entities
             exp = 0;
             getExp = 0;
             isDead = false;
+            evasionChance = 10;
+            criticalChance = 15;
         }
 
         public override int AtkDiff()
@@ -77,6 +88,7 @@ namespace ConsoleRPG_Team.Entities
         }
 
         public void EquipItem()
+
         {
             while (true)
             {
@@ -98,7 +110,7 @@ namespace ConsoleRPG_Team.Entities
 
 
 
-                if (inventory[select - 1].item_Type == "consumable")
+                if (inventory[select - 1].item_Type == ItemType.Consumable)
                 {
                     UseableItem item = inventory[select - 1] as UseableItem;
                     if (item != null)
@@ -115,6 +127,28 @@ namespace ConsoleRPG_Team.Entities
                 else
                 {
                     inventory[select - 1].item_isEquiped = !inventory[select - 1].item_isEquiped;
+                    UpdateStat();
+                }
+            }
+        }
+
+        private void UpdateStat()
+        {
+            bonusAtk = 0;
+            bonusDef = 0;
+
+            foreach(Item item in inventory)
+            {
+                if(item.item_isEquiped)
+                {
+                    if(item.item_Type == ItemType.Weapon)
+                    {
+                        bonusAtk += item.item_Pow;
+                    }
+                    if(item.item_Type == ItemType.Armor)
+                    {
+                        bonusDef += item.item_Pow;
+                    }
                 }
             }
         }
@@ -134,42 +168,52 @@ namespace ConsoleRPG_Team.Entities
 
             if (playerClass == PlayerClass.None && level >= 3)
             {
-                while (!chooseClass)
+                GetClass();
+            }
+        }
 
+        private void GetClass()
+        {
+            while (!chooseClass)
+
+            {
+                Console.WriteLine("전직할수 있습니다 어떤 직업으로 하시겠습니까?.");
+                Console.WriteLine("1.전사 2.마법사 3.도적");
+
+                int select = 0;
+                bool isSelect = int.TryParse(Console.ReadLine(), out select);
+
+                if (!isSelect)
                 {
-                    Console.WriteLine("전직할수 있습니다 어떤 직업으로 하시겠습니까?.");
-                    Console.WriteLine("1.전사 2.마법사 3.도적");
-
-                    int select = 0;
-                    bool isSelect = int.TryParse(Console.ReadLine(), out select);
-
-                    if (!isSelect)
-                    {
-                        Console.WriteLine("숫자로 선택해주세요.");
-                        continue;
-                    }
-
-                    switch (select)
-                    {
-                        case 1:
-                            playerClass = PlayerClass.Warrior;
-                            chooseClass = true;
-                            break;
-                        case 2:
-                            playerClass = PlayerClass.Mage;
-                            chooseClass = true;
-                            break;
-                        case 3:
-                            playerClass = PlayerClass.Rogue;
-                            chooseClass = true;
-                            break;
-                        default:
-                            Console.WriteLine("당신은 아무 직업도 선택하지 않았다..");
-                            chooseClass = true;
-                            break;
-                    }
+                    Console.WriteLine("숫자로 선택해주세요.");
+                    continue;
                 }
-                
+
+                switch (select)
+                {
+                    case 1:
+                        playerClass = PlayerClass.Warrior;
+                        chooseClass = true;
+                        maxHealth += 10;
+                        Console.WriteLine("최대체력 10 증가");
+                        break;
+                    case 2:
+                        playerClass = PlayerClass.Mage;
+                        chooseClass = true;
+                        criticalChance += 10;
+                        Console.WriteLine("치명타확률 10% 증가");
+                        break;
+                    case 3:
+                        playerClass = PlayerClass.Rogue;
+                        chooseClass = true;
+                        evasionChance += 10;
+                        Console.WriteLine("회피확률 10% 증가");
+                        break;
+                    default:
+                        Console.WriteLine("당신은 아무 직업도 선택하지 않았다..");
+                        chooseClass = true;
+                        break;
+                }
             }
         }
     }

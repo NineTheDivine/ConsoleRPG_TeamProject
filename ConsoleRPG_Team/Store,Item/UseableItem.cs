@@ -12,7 +12,7 @@ namespace ConsoleRPG_Team.Store_Item
         public int healAmount;
         public int manaAmount;
 
-        public UseableItem(int ID, string name, string description, int price, string type, int heal, int mana)
+        public UseableItem(int ID, string name, string description, int price, ItemType type, int heal, int mana)
             :base(ID, name, 0 , description, price, type)
         {
             this.healAmount = heal;
