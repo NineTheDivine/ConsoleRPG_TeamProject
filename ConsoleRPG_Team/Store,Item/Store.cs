@@ -17,7 +17,7 @@ namespace ConsoleRPG_Team.Store_Item
             Item item = new Item();
             storeItems.AddRange(Item.items);
         }
-        private void ShowItems()
+        public void ShowItems()
         {
             int i = 1;
             Console.WriteLine("=============================================================================");
