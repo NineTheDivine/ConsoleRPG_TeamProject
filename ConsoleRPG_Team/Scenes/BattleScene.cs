@@ -51,8 +51,8 @@ namespace ConsoleRPG_Team.Scenes
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGray;
                         Console.WriteLine("Lv.{0:D2} {1:8} Dead", enemy.level, enemy.name);
-                        Console.ResetColor();
-                    }
+                        Console.ResetColor();                  
+                    }  
                     else
                         Console.WriteLine("Lv.{0:D2} {1:8} HP {2,-3}", enemy.level, enemy.name, enemy.health.ToString());
                 }
@@ -114,7 +114,12 @@ namespace ConsoleRPG_Team.Scenes
                             Console.WriteLine("HP {0:3} -> {1:4}", beforeEnemeyHealth.ToString(), 
                                 this.enemyWave.spawnEnemies[(int)target - 1].isDead ? "Dead" : this.enemyWave.spawnEnemies[(int)target - 1].health.ToString());
                             if (this.enemyWave.spawnEnemies[(int)target - 1].isDead)
+                            {
                                 _enemyCount--;
+                                this.enemyWave.spawnEnemies[(int)target - 1].GiveExp();
+                                GameManager.playerInstance.getExp += this.enemyWave.spawnEnemies[(int)target - 1].exp;
+                                this.enemyWave.spawnEnemies[(int)target - 1].DropItem();
+                            }
                             while (AskInput(0, 0, nextstream, "") == null)
                                 continue;
                         }
@@ -143,7 +148,8 @@ namespace ConsoleRPG_Team.Scenes
                 }
                 Console.WriteLine("Lv.{0:D2} Chad ( {1:4} )", GameManager.playerInstance.level, /*Need to be fixed */GameManager.playerInstance.name);
                 Console.WriteLine("HP : {0:-3} -> {1:-4}", beforePlayerHP.ToString(),
-                    GameManager.playerInstance.isDead ? "Dead" : GameManager.playerInstance.health.ToString());
+                GameManager.playerInstance.isDead ? "Dead" : GameManager.playerInstance.health.ToString());
+                
 
                 while (AskInput(0, 0, nextstream) == null)
                     continue;

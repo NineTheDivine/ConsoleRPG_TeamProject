@@ -32,6 +32,9 @@ namespace ConsoleRPG_Team.Scenes
             Console.WriteLine();
             Console.WriteLine("Lv.{0:D2} Chad ( {1:4} )", GameManager.playerInstance.level, /*Need to be fixed */GameManager.playerInstance.name);
             Console.WriteLine("HP : {0:-3} -> {1:-3}", GameManager.playerInstance.beforeHealth.ToString(), GameManager.playerInstance.health.ToString());
+            Console.WriteLine($"{GameManager.playerInstance.getExp} 경험치를 흭득했습니다!");
+            GameManager.playerInstance.getExp = 0;
+            GameManager.playerInstance.LevelUp();
             GameManager.playerInstance.beforeHealth = null;
 
 

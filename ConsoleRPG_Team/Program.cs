@@ -2,6 +2,7 @@
 ﻿using System;
 using ConsoleRPG_Team.Scenes;
 using ConsoleRPG_Team.Entities;
+using ConsoleRPG_Team.Store_Item;
 
 namespace ConsoleRPG_Team
 {
@@ -10,7 +11,14 @@ namespace ConsoleRPG_Team
     {
         static void Main(string[] args)
         {
+            //Store store = new Store();
+
+            //store.Buy();
+
+            //GameManager.playerInstance.EquipItem();
+
             GameManager.OnPlay();
+
         }
     }
 }
