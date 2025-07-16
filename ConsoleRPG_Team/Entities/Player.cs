@@ -2,9 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 
 public enum PlayerClass
 {
@@ -21,17 +23,8 @@ namespace ConsoleRPG_Team.Entities
         public int? beforeHealth { get; set; } = null;
         public int def { get; protected set; }
         public int gold { get; set; }
-
-        public int evasionChance { get; set; } // 회피확률
-
-        public int criticalChance { get; set; } //치명타확률
-
+        public int criticalPro { get; set; } //치명타확률
         public int getExp { get; set; }
-
-        private int bonusAtk {  get; set; }
-        private int bonusDef { get; set; }
-
-        
 
         bool chooseClass = false;
 
@@ -39,13 +32,15 @@ namespace ConsoleRPG_Team.Entities
 
         public List<Item> inventory = new List<Item>();
 
+       
+
 
 
         public Player()
         {
             name = "주인공"; // 추후 입력해서 설정
             level = 1;
-            atk = 15;
+            atk = 5;
             def = 5;
             health = 100;
             beforeHealth = null;
@@ -55,14 +50,14 @@ namespace ConsoleRPG_Team.Entities
             exp = 0;
             getExp = 0;
             isDead = false;
-            evasionChance = 10;
-            criticalChance = 15;
+            criticalPro = 15;
         }
 
         public override int AtkDiff()
         {
-            int criticalChance = random.Next(1, 101);
-            if (criticalChance >= 15)
+           int criticalChance = random.Next(1, 101);
+
+            if (criticalPro >= criticalChance)
             {
                 Console.WriteLine("치명타!");
                 return (int)(base.AtkDiff() * 1.6f);
@@ -108,8 +103,6 @@ namespace ConsoleRPG_Team.Entities
                     continue;
                 }
 
-
-
                 if (inventory[select - 1].item_Type == ItemType.Consumable)
                 {
                     UseableItem item = inventory[select - 1] as UseableItem;
@@ -124,34 +117,47 @@ namespace ConsoleRPG_Team.Entities
                         Console.WriteLine("사용할수 없다");
                     }
                 }
+                else if (inventory[select - 1].item_isEquiped == false)
+                {
+                    foreach(Item item in inventory)
+                    {
+                        if(item.item_isEquiped && item.item_Type == inventory[select - 1].item_Type)
+                        {
+                            item.item_isEquiped = false;
+                            Console.WriteLine($"{item.item_Name}을 장착 해제했습니다.");
+                        }       
+                    }
+                    inventory[select - 1].item_isEquiped = true;
+                    Console.WriteLine($"{inventory[select - 1].item_Name}을 장착했습니다.");
+                }
                 else
                 {
-                    inventory[select - 1].item_isEquiped = !inventory[select - 1].item_isEquiped;
-                    UpdateStat();
+                    inventory[select - 1].item_isEquiped = false;
+                    Console.WriteLine($"{inventory[select - 1].item_Name}을 장착 해제 했습니다.");
                 }
             }
         }
 
-        private void UpdateStat()
-        {
-            bonusAtk = 0;
-            bonusDef = 0;
+        //private void UpdateStat()
+        //{
+        //    atk = 15;
+        //    def = 5;
 
-            foreach(Item item in inventory)
-            {
-                if(item.item_isEquiped)
-                {
-                    if(item.item_Type == ItemType.Weapon)
-                    {
-                        bonusAtk += item.item_Pow;
-                    }
-                    if(item.item_Type == ItemType.Armor)
-                    {
-                        bonusDef += item.item_Pow;
-                    }
-                }
-            }
-        }
+        //    foreach(Item item in inventory)
+        //    {
+        //        if(item.item_isEquiped)
+        //        {
+        //            if(item.item_Type == ItemType.Weapon)
+        //            {
+        //                atk += item.item_Pow;
+        //            }
+        //            if(item.item_Type == ItemType.Armor)
+        //            {
+        //                def += item.item_Pow;
+        //            }
+        //        }
+        //    }
+        //}
 
         public void LevelUp()
         {
@@ -200,14 +206,15 @@ namespace ConsoleRPG_Team.Entities
                     case 2:
                         playerClass = PlayerClass.Mage;
                         chooseClass = true;
-                        criticalChance += 10;
-                        Console.WriteLine("치명타확률 10% 증가");
+                        atk += 2;
+                        Console.WriteLine("공격력 2증가");
                         break;
                     case 3:
                         playerClass = PlayerClass.Rogue;
                         chooseClass = true;
-                        evasionChance += 10;
-                        Console.WriteLine("회피확률 10% 증가");
+                        criticalPro += 10;
+
+                        Console.WriteLine("치명타확률 10% 증가");
                         break;
                     default:
                         Console.WriteLine("당신은 아무 직업도 선택하지 않았다..");
