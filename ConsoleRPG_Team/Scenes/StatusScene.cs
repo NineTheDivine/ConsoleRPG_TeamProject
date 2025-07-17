@@ -31,6 +31,7 @@ namespace ConsoleRPG_Team.Scenes
             Console.WriteLine("공격력 : {0:-3}", GameManager.playerInstance.atk.ToString());
             Console.WriteLine("방어력 : {0:-3}", GameManager.playerInstance.def.ToString());
             Console.WriteLine("체 력 : {0:-3} / {1:-3}", GameManager.playerInstance.health.ToString(), GameManager.playerInstance.maxHealth.ToString());
+            //Console.WRiteLine("마 나 : // 스킬 추가시 마나 추가 예정
             Console.WriteLine("Gold : {0:-6} G", GameManager.playerInstance.gold.ToString());
             //End Player info
 

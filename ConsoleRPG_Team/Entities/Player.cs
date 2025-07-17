@@ -88,9 +88,11 @@ namespace ConsoleRPG_Team.Entities
             {
                 string equipState = item.item_isEquiped ? "[E]" : "  ";
                 string quantityNum = item.item_quantity > 1 ? $"x {item.item_quantity}" : "";
+                string upgradeNum = item.item_Upgrade >= 1 ? $"+ {item.item_Upgrade}" : "";
+
                 Console.Write($"|{i}| {equipState} |");
                 Console.ForegroundColor = item.GetGradeColor();
-                Console.Write($" {item.item_Name + quantityNum ,-15}");
+                Console.Write($" {item.item_Name + quantityNum + upgradeNum,-15}");
                 Console.ResetColor();
                 Console.WriteLine($" | {item.item_Pow,5} | {item.item_Description,-23} |");
                 i++;
@@ -181,15 +183,15 @@ namespace ConsoleRPG_Team.Entities
         //    atk = 15;
         //    def = 5;
 
-        //    foreach(Item item in inventory)
+        //    foreach (Item item in inventory)
         //    {
-        //        if(item.item_isEquiped)
+        //        if (item.item_isEquiped)
         //        {
-        //            if(item.item_Type == ItemType.Weapon)
+        //            if (item.item_Type == ItemType.Weapon)
         //            {
         //                atk += item.item_Pow;
         //            }
-        //            if(item.item_Type == ItemType.Armor)
+        //            if (item.item_Type == ItemType.Armor)
         //            {
         //                def += item.item_Pow;
         //            }

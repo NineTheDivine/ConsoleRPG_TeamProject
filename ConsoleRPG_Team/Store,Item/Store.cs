@@ -14,6 +14,8 @@ namespace ConsoleRPG_Team.Store_Item
     {
         public List<Item> storeItems = new List<Item>();
 
+        private Random random = new Random();
+
         public Store()
         {
             Item item = new Item();
@@ -88,7 +90,6 @@ namespace ConsoleRPG_Team.Store_Item
 
         public void Sell()
         {
-
             while (true)
             {
                 GameManager.playerInstance.ShowInventory();
@@ -136,6 +137,114 @@ namespace ConsoleRPG_Team.Store_Item
                 inven.RemoveAt(select - 1);
 
             }
+        }
+
+        public void Upgrade()
+        {
+            while(true)
+            {
+                GameManager.playerInstance.ShowInventory();
+
+                List<Item> inven = GameManager.playerInstance.inventory;
+
+                Console.WriteLine($"보유 {GameManager.playerInstance.gold}G");
+
+                Console.WriteLine("업그레이드 하고싶은 아이템을 선택해주세요. 나가려면 0을 눌러주세요.");
+                int select = 0;
+                bool isSelect = int.TryParse(Console.ReadLine(), out select);
+
+                if(select == 0)
+                    break;
+
+                if (!isSelect)
+                {
+                    Console.WriteLine("숫자를 입력해주세요.");
+                    continue;
+                }
+
+                if (select > inven.Count || select < 0)
+                {
+                    Console.WriteLine("잘못된 입력입니다.");
+                    continue;
+                }
+
+                Item chooseItem = inven[select - 1];
+
+                if(chooseItem.item_Type == ItemType.Consumable)
+                {
+                    Console.WriteLine("이 아이템은 강화가 불가능합니다.");
+                    continue;
+                }
+
+                int baseCost = chooseItem.item_Price / 2;
+                int baseSuccess = 80;
+
+                ItemGrade grade = chooseItem.item_Grade;
+
+                int gradeCost = grade switch
+                {
+                    ItemGrade.Common => 1,
+                    ItemGrade.Rare => 2,
+                    ItemGrade.Epic => 3,
+                    ItemGrade.Legendary => 4,
+                    _ => 1
+                };
+
+                int gradeSuccess = grade switch
+                {
+                    ItemGrade.Common => 0,
+                    ItemGrade.Rare => - 5,
+                    ItemGrade.Epic => - 10,
+                    ItemGrade.Legendary => - 15,
+                    _ => 0
+                };
+
+                int upgradeCost = baseCost + chooseItem.item_Upgrade * 100 * gradeCost;
+                int successChance = baseSuccess - chooseItem.item_Upgrade * 10 + gradeSuccess;
+                successChance = Math.Clamp(successChance, 5, 95);
+
+                if(GameManager.playerInstance.gold < upgradeCost)
+                {
+                    Console.WriteLine("돈이 부족합니다.");
+                    continue;
+                }
+
+                Console.WriteLine($"강화 비용: {upgradeCost}G, 성공 확률: {successChance}% 입니다. 강화하시겠습니까(1/0)?");
+                int upgradeCheck = 0;
+                bool isUpgrade = int.TryParse(Console.ReadLine(), out upgradeCheck);
+
+                if(!isUpgrade || upgradeCheck != 1)
+                {
+                    Console.WriteLine("강화를 취소했습니다.");
+                    continue;
+                }
+
+
+                GameManager.playerInstance.gold -= upgradeCost;
+
+                int ran = random.Next(1, 101);
+
+                if(ran <= successChance)
+                {
+                    int upgradePow = chooseItem.item_Grade switch
+                    {
+                        ItemGrade.Common => 1,
+                        ItemGrade.Rare => 2,
+                        ItemGrade.Epic => 3,
+                        ItemGrade.Legendary => 4,
+                        _ => 1
+                    };
+
+                    chooseItem.item_Upgrade++;
+                    chooseItem.item_Pow += upgradePow;
+
+                    Console.WriteLine($"축하드립니다! {chooseItem.item_Name} +{chooseItem.item_Upgrade}강이 되었습니다. 능력치 +{upgradePow}");           
+                }
+                else
+                {
+                    Console.WriteLine("강화 실패!");
+                }         
+            }  
         }
     }
 }

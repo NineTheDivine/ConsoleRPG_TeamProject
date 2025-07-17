@@ -14,7 +14,7 @@ public enum ItemType
 }
 public enum ItemGrade
 {
-    Common,
+    Common = 1,
     Rare,
     Epic,
     Legendary
@@ -30,6 +30,7 @@ namespace ConsoleRPG_Team.Store_Item
         public int item_Price { get; set; }
 
         public int item_quantity { get; set; } = 1; // 같은아이템 중첩되게
+        public int item_Upgrade { get; set; } = 0; //업그레이드
         public ItemType item_Type { get; set; }
 
         public ItemGrade item_Grade { get; set; }
