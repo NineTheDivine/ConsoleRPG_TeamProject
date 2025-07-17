@@ -48,9 +48,9 @@ namespace ConsoleRPG_Team.Quests
             {0 , new QuestInfo(new QuestID(QuestType.BattleWin, 0), 1, "적과의 경험", "전투에서 1회 승리하세요")},
             {1 , new QuestInfo(new QuestID(QuestType.BattleWin, 0), 3, "적 소탕작전", "전투에서 3회 승리하세요") },
             {2 , new QuestInfo(new QuestID(QuestType.BattleWin, 0), 5, "적 말살작전", "전투에서 5회 승리하세요") },
-            {3 , new QuestInfo(new QuestID(QuestType.SlainEnemy, 0), 1, "미니언 처치", "미니언 세마리를 잡으세요") },
-            {4 , new QuestInfo(new QuestID(QuestType.SlainEnemy, 1), 1, "공허충 처치", "공허충 세마리를 잡으세요") },
-            {5 , new QuestInfo(new QuestID(QuestType.SlainEnemy , 2), 1, "대포미니언 처치", "대포미니언 세마리를 잡으세요") }
+            {3 , new QuestInfo(new QuestID(QuestType.SlainEnemy, 0), 3, "미니언 처치", "미니언 세마리를 잡으세요") },
+            {4 , new QuestInfo(new QuestID(QuestType.SlainEnemy, 1), 3, "공허충 처치", "공허충 세마리를 잡으세요") },
+            {5 , new QuestInfo(new QuestID(QuestType.SlainEnemy , 2), 3, "대포미니언 처치", "대포미니언 세마리를 잡으세요") }
         };
     }
 

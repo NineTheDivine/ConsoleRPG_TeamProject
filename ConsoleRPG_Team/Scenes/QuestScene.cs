@@ -87,6 +87,7 @@ namespace ConsoleRPG_Team.Scenes
                                     _InitQuest();
                                     acceptInput = 0;
                                 }
+                                acceptInput = 0;
                             }
                             else
                                 acceptInput = AskInput(0, 0, this.inputstream);
