@@ -16,7 +16,8 @@ namespace ConsoleRPG_Team.Scenes
         GameOverScene,
         StatusScene,
         StoreScene, // 임시
-        InventoryScene // 임시
+        InventoryScene, // 임시
+        QuestScene
     };
 
     internal abstract class Scene
