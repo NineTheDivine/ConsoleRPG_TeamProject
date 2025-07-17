@@ -258,5 +258,30 @@ namespace ConsoleRPG_Team.Entities
                 }
             }
         }
+
+        public void GetItem(Item item)
+        {
+            var sameItem = inventory.FirstOrDefault(i => i.item_ID == item.item_ID);
+
+            if(sameItem != null && item.item_Type == ItemType.Consumable)
+            {
+                sameItem.item_quantity += 1;
+            }
+            else
+            {
+                UseableItem newItem = new UseableItem()
+                {
+                    item_ID = item.item_ID,
+                    item_Name = item.item_Name,
+                    item_Pow = item.item_Pow,
+                    item_Description = item.item_Description,
+                    item_Type = item.item_Type,
+                    item_Price = item.item_Price,
+                    item_Grade = item.item_Grade,
+                    item_quantity = 1
+                };
+                inventory.Add(newItem);
+            }
+        }
     }
 }

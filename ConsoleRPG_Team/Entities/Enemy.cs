@@ -54,7 +54,7 @@ namespace ConsoleRPG_Team.Entities
             if(dropRate > dropChance)
             {
                 Console.WriteLine($"{dropItem.item_Name}을 흭득했습니다.");
-                GameManager.playerInstance.inventory.Add(dropItem);
+                GameManager.playerInstance.GetItem(dropItem);
             }
         }
 

@@ -70,27 +70,7 @@ namespace ConsoleRPG_Team.Store_Item
                 {
                     GameManager.playerInstance.gold -= buyItem.item_Price;
 
-                    var sameItem = GameManager.playerInstance.inventory.FirstOrDefault(i => i.item_ID == buyItem.item_ID);
-
-                    if (sameItem != null && buyItem.item_Type == ItemType.Consumable)
-                    {
-                        sameItem.item_quantity += 1;
-                    }
-                    else
-                    {
-                        UseableItem newItem = new UseableItem()
-                        {
-                            item_ID = buyItem.item_ID,
-                            item_Name = buyItem.item_Name,
-                            item_Pow = buyItem.item_Pow,
-                            item_Description = buyItem.item_Description,
-                            item_Type = buyItem.item_Type,
-                            item_Price = buyItem.item_Price,
-                            item_Grade = buyItem.item_Grade,
-                            item_quantity = 1
-                        };
-                        GameManager.playerInstance.inventory.Add(newItem);
-                    }
+                    GameManager.playerInstance.GetItem(buyItem);
 
                     Console.WriteLine($"{buyItem.item_Name} 을 구매했습니다.");
 
