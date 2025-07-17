@@ -17,7 +17,7 @@ namespace ConsoleRPG_Team.Store_Item
             Item item = new Item();
             storeItems.AddRange(Item.items);
         }
-        private void ShowItems()
+        public void ShowItems()
         {
             int i = 1;
             Console.WriteLine("=============================================================================");
@@ -25,8 +25,12 @@ namespace ConsoleRPG_Team.Store_Item
             Console.WriteLine("-----------------------------------------------------------------------------");
 
             foreach (Item item in storeItems)
-            {
-                Console.WriteLine($"| {i,2} | {item.item_Name,-14} | {item.item_Pow,5} | {item.item_Price,4}G | {item.item_Description,-23} |");
+            {         
+                Console.Write($"| {i,2} |");
+                Console.ForegroundColor = item.GetGradeColor();
+                Console.Write($" {item.item_Name,-14}");
+                Console.ResetColor();
+                Console.WriteLine($" | {item.item_Pow,5} | {item.item_Price,4}G | {item.item_Description,-23} |");
                 i++;
             }
             Console.WriteLine("===============================================================================");
