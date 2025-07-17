@@ -29,6 +29,7 @@ namespace ConsoleRPG_Team.Store_Item
         public string item_Description { get; set; }
         public int item_Price { get; set; }
 
+        public int item_quantity { get; set; } = 1; // 같은아이템 중첩되게
         public ItemType item_Type { get; set; }
 
         public ItemGrade item_Grade { get; set; }
@@ -58,7 +59,7 @@ namespace ConsoleRPG_Team.Store_Item
             item_Description = description;
             item_Price = price;
             item_Type = type;
-            item_Grade = grade;   
+            item_Grade = grade;
         }
 
         public Item()

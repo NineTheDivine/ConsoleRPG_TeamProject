@@ -83,10 +83,11 @@ namespace ConsoleRPG_Team.Entities
             Console.WriteLine("-----------------------------------------------------------------------------");
             foreach (Item item in GameManager.playerInstance.inventory)
             {
-                string equipState = item.item_isEquiped ? "[E]" : "  ";        
+                string equipState = item.item_isEquiped ? "[E]" : "  ";
+                string quantityNum = item.item_quantity > 1 ? $"x {item.item_quantity}" : "";
                 Console.Write($"|{i}| {equipState} |");
                 Console.ForegroundColor = item.GetGradeColor();
-                Console.Write($" {item.item_Name,-15}");
+                Console.Write($" {item.item_Name + quantityNum ,-15}");
                 Console.ResetColor();
                 Console.WriteLine($" | {item.item_Pow,5} | {item.item_Description,-23} |");
                 i++;
@@ -94,8 +95,7 @@ namespace ConsoleRPG_Team.Entities
             Console.WriteLine("=============================================================================");
         }
 
-        public void EquipItem()
-
+        public void InventorySystem()
         {
             while (true)
             {
@@ -109,44 +109,67 @@ namespace ConsoleRPG_Team.Entities
                 if (select == 0)
                     break;
 
-                if (select > inventory.Count || select < 0)
+                if (!isSelect || select > inventory.Count || select < 0)
                 {
                     Console.WriteLine("잘못된 입력");
                     continue;
                 }
 
-                if (inventory[select - 1].item_Type == ItemType.Consumable)
+                Item selectItem = inventory[select - 1];
+
+                if (selectItem.item_Type == ItemType.Consumable)
                 {
-                    UseableItem item = inventory[select - 1] as UseableItem;
-                    if (item != null)
-                    {
-                        item.use(this);
-                        inventory.RemoveAt(select - 1);
-                        Console.WriteLine($"{item.item_Name}을(를) 사용했습니다.");
-                    }
-                    else
-                    {
-                        Console.WriteLine("사용할수 없다");
-                    }
+                    UseConsumable(select);
                 }
-                else if (inventory[select - 1].item_isEquiped == false)
-                {
-                    foreach(Item item in inventory)
-                    {
-                        if(item.item_isEquiped && item.item_Type == inventory[select - 1].item_Type)
-                        {
-                            item.item_isEquiped = false;
-                            Console.WriteLine($"{item.item_Name}을 장착 해제했습니다.");
-                        }       
-                    }
-                    inventory[select - 1].item_isEquiped = true;
-                    Console.WriteLine($"{inventory[select - 1].item_Name}을 장착했습니다.");
-                }
+
                 else
                 {
-                    inventory[select - 1].item_isEquiped = false;
-                    Console.WriteLine($"{inventory[select - 1].item_Name}을 장착 해제 했습니다.");
+                    EquipItem(select);
                 }
+            }
+        }
+
+        private void UseConsumable(int select)
+        {
+            UseableItem item = inventory[select - 1] as UseableItem;
+            if (item != null)
+            {
+                item.use(this);
+                item.item_quantity -= 1;
+
+                if(item.item_quantity <= 0)
+                {
+                    inventory.RemoveAt(select - 1);
+                }
+                Console.WriteLine($"{item.item_Name}을(를) 사용했습니다.");
+            }
+            else
+            {
+                Console.WriteLine("이게 뜨면 문제가있따");
+            }
+        }
+
+        private void EquipItem(int select)
+        {
+            Item selectItem = inventory[select - 1];
+
+            if(!selectItem.item_isEquiped)
+            {
+                foreach(Item item in inventory)
+                {
+                    if(item.item_isEquiped && item.item_Type == selectItem.item_Type)
+                    {
+                        item.item_isEquiped = false;
+                        Console.WriteLine($"{item.item_Name}의 장착을 해제했습니다.");
+                    }
+                }
+                selectItem.item_isEquiped = true;
+                Console.WriteLine($"{selectItem.item_Name}을 장착했습니다.");
+            }
+            else
+            {
+                selectItem.item_isEquiped = false;
+                Console.WriteLine($"{selectItem.item_Name}을 장착을 해제했습니다.");
             }
         }
 

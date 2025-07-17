@@ -1,9 +1,11 @@
 ﻿using ConsoleRPG_Team.Entities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using static System.Formats.Asn1.AsnWriter;
 
 namespace ConsoleRPG_Team.Store_Item
@@ -25,7 +27,7 @@ namespace ConsoleRPG_Team.Store_Item
             Console.WriteLine("-----------------------------------------------------------------------------");
 
             foreach (Item item in storeItems)
-            {         
+            {
                 Console.Write($"| {i,2} |");
                 Console.ForegroundColor = item.GetGradeColor();
                 Console.Write($" {item.item_Name,-14}");
@@ -34,10 +36,6 @@ namespace ConsoleRPG_Team.Store_Item
                 i++;
             }
             Console.WriteLine("===============================================================================");
-
-
-            //Console.WriteLine("어떤 아이템을 구매 하실건가요?");
-
         }
         public void Buy()
         {
@@ -51,7 +49,7 @@ namespace ConsoleRPG_Team.Store_Item
 
                 bool isSelect = int.TryParse(Console.ReadLine(), out select);
 
-                if(!isSelect)
+                if (!isSelect)
                 {
                     Console.WriteLine("숫자를 입력해 주세요.");
                     continue;
@@ -66,18 +64,44 @@ namespace ConsoleRPG_Team.Store_Item
                     continue;
                 }
 
-                if (GameManager.playerInstance.gold > storeItems[select - 1].item_Price)
+                Item buyItem = storeItems[select - 1];
+
+                if (GameManager.playerInstance.gold >= buyItem.item_Price)
                 {
-                    GameManager.playerInstance.gold -= storeItems[select - 1].item_Price;
+                    GameManager.playerInstance.gold -= buyItem.item_Price;
 
-                    Console.WriteLine($"{storeItems[select - 1].item_Name} 을 구매했습니다.");
+                    var sameItem = GameManager.playerInstance.inventory.FirstOrDefault(i => i.item_ID == buyItem.item_ID);
 
-                    GameManager.playerInstance.inventory.Add(storeItems[select - 1]);
-                    storeItems.RemoveAt(select - 1);
+                    if (sameItem != null && buyItem.item_Type == ItemType.Consumable)
+                    {
+                        sameItem.item_quantity += 1;
+                    }
+                    else
+                    {
+                        UseableItem newItem = new UseableItem()
+                        {
+                            item_ID = buyItem.item_ID,
+                            item_Name = buyItem.item_Name,
+                            item_Pow = buyItem.item_Pow,
+                            item_Description = buyItem.item_Description,
+                            item_Type = buyItem.item_Type,
+                            item_Price = buyItem.item_Price,
+                            item_Grade = buyItem.item_Grade,
+                            item_quantity = 1
+                        };
+                        GameManager.playerInstance.inventory.Add(newItem);
+                    }
+
+                    Console.WriteLine($"{buyItem.item_Name} 을 구매했습니다.");
+
+                    if (buyItem.item_Type != ItemType.Consumable)
+                    {
+                        storeItems.RemoveAt(select - 1);
+                    }
                 }
                 else
                 {
-                    Console.WriteLine($"{GameManager.playerInstance.gold - storeItems[select - 1].item_Price}G 가 부족합니다.");
+                    Console.WriteLine($"{GameManager.playerInstance.gold - buyItem.item_Price}G 가 부족합니다.");
                 }
             }
         }
@@ -95,7 +119,7 @@ namespace ConsoleRPG_Team.Store_Item
                 int select = 0;
                 bool isSelect = int.TryParse(Console.ReadLine(), out select);
 
-                if(inven.Count == 0)
+                if (inven.Count == 0)
                 {
                     Console.WriteLine("팔 아이템이 없습니다.");
                     break;

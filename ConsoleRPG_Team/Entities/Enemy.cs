@@ -20,6 +20,7 @@ namespace ConsoleRPG_Team.Entities
         public bool isEXP = false;
 
         public Item dropItem;
+
         public int dropRate;
         public Enemy(EnemyType eT, string name, int level, int health, int atk, int dropRate , Item dropItem)
         {
@@ -49,7 +50,6 @@ namespace ConsoleRPG_Team.Entities
 
         public void DropItem()
         {
-            Random random = new Random();
             int dropChance = random.Next(1, 101);
             if(dropRate > dropChance)
             {

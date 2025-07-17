@@ -19,6 +19,10 @@ namespace ConsoleRPG_Team.Store_Item
             this.manaAmount = mana;
         }
 
+        public UseableItem()
+        {
+        }
+
         public void use(Entity target)
         {
 

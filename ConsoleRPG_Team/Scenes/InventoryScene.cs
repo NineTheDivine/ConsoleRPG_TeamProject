@@ -18,7 +18,7 @@ namespace ConsoleRPG_Team.Scenes
 
         public override SceneType OnSceneEnter()
         {
-            GameManager.playerInstance.EquipItem();
+            GameManager.playerInstance.InventorySystem();
 
             int? input = AskInput(0, 0, this.inputstream);
             switch (input)
