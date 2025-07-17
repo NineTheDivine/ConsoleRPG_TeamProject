@@ -25,10 +25,13 @@ namespace ConsoleRPG_Team.Entities
         public int def { get; protected set; }
         public int gold { get; set; }
         public int criticalPro { get; set; } //치명타확률
-        public int getExp { get; set; }
+        public int getExp { get; set; } // 전투후 획득 경험치 표시용
+        public int maxExp => levelExp[level]; // Status 표시용
         public Quest? currentQuest { get; set; } = null;
 
         bool chooseClass = false;
+
+        private int[] levelExp = { 0, 10, 35, 65, 100 }; // 레벨별 필요 경험치
 
         public PlayerClass playerClass { get; protected set; }
 
@@ -196,8 +199,6 @@ namespace ConsoleRPG_Team.Entities
 
         public void LevelUp()
         {
-            int[] levelExp = { 0, 10, 35, 65, 100 };
-
             while (level < levelExp.Length && exp >= levelExp[level])
             {
                 exp -= levelExp[level];
