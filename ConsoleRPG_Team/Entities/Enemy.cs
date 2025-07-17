@@ -48,6 +48,11 @@ namespace ConsoleRPG_Team.Entities
             this.dropItem = e.dropItem;
         }
 
+        public override int AtkDiff()
+        {
+            int damage = base.AtkDiff() - GameManager.playerInstance.GetDef();
+            return Math.Max(0, damage);
+        }
         public void DropItem()
         {
             int dropChance = random.Next(1, 101);
