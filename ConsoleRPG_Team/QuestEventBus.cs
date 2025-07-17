@@ -3,38 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleRPG_Team.Quests;
 
 namespace ConsoleRPG_Team
 {
 
     public static class QuestEventBus
     {
-        static private Dictionary<int , List<Action>> eventHandlers = new Dictionary<int, List<Action>>();
+        static private Dictionary<QuestID , List<Action>> eventHandlers = new Dictionary<QuestID, List<Action>>();
 
-        static public void Subscribe(int EventID, Action action)
+        static public void Subscribe(QuestID ID, Action action)
         {
-            if (!eventHandlers.ContainsKey(EventID))
+            if (!eventHandlers.ContainsKey(ID))
             {
-                eventHandlers[EventID] = new List<Action>();
+                eventHandlers[ID] = new List<Action>();
             }
-            eventHandlers[EventID].Add(action);
+            eventHandlers[ID].Add(action);
         }
 
-        static public void Unsubscribe(int EventID, Action action)
+        static public void Unsubscribe(QuestID ID, Action action)
         {
-            if (eventHandlers.ContainsKey(EventID))
+            if (eventHandlers.ContainsKey(ID))
             {
-                eventHandlers[EventID].Remove(action);
+                eventHandlers[ID].Remove(action);
             }
         }
 
-        static public void Publish(int EventID)
+        static public void Publish(QuestID ID)
         {
-            if (eventHandlers.ContainsKey(EventID))
+            if (eventHandlers.ContainsKey(ID))
             {
-                List<Action> handlers = eventHandlers[EventID];
-                foreach (Action handler in handlers)
-                    handler.Invoke();
+                List<Action> actions = eventHandlers[ID];
+                foreach (var action in actions)
+                    action.Invoke();
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using ConsoleRPG_Team.Store_Item;
+using ConsoleRPG_Team.Quests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,15 +26,13 @@ namespace ConsoleRPG_Team.Entities
         public int gold { get; set; }
         public int criticalPro { get; set; } //치명타확률
         public int getExp { get; set; }
+        public Quest? currentQuest { get; set; } = null;
 
         bool chooseClass = false;
 
         public PlayerClass playerClass { get; protected set; }
 
         public List<Item> inventory = new List<Item>();
-
-       
-
 
 
         public Player()
@@ -53,6 +52,15 @@ namespace ConsoleRPG_Team.Entities
             criticalPro = 15;
         }
 
+        public override void Attack(Entity target)
+        {
+            base.Attack(target);
+            if (target is Enemy && target.isDead)
+            {
+                Enemy e = target as Enemy;
+                QuestEventBus.Publish(new QuestID(QuestType.SlainEnemy, (int)e.enemyType));
+            }
+        }
         public override int AtkDiff()
         {
            int criticalChance = random.Next(1, 101);

@@ -22,7 +22,7 @@ namespace ConsoleRPG_Team.Entities
 
         protected Random random = new Random();
 
-        public  void Attack(Entity target)
+        public virtual void Attack(Entity target)
         {
             int attackMiss = random.Next(1, 101);
 

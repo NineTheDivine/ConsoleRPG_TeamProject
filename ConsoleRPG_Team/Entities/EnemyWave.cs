@@ -33,9 +33,9 @@ namespace ConsoleRPG_Team.Entities
 
             List<Enemy> enmies = new List<Enemy>();
             {
-                enmies.Add(new Enemy("미니언", 1, 10, 1, 30, Item.items[0]));
-                enmies.Add(new Enemy("공허충", 2, 15, 3 , 30 , Item.items[1]));
-                enmies.Add(new Enemy("대포미니언", 3, 20, 5 , 30, Item.items[2]));
+                enmies.Add(new Enemy(EnemyType.Minion,"미니언", 1, 10, 1, 30, Item.items[0]));
+                enmies.Add(new Enemy(EnemyType.Voidspawn,"공허충", 2, 15, 3 , 30 , Item.items[1]));
+                enmies.Add(new Enemy(EnemyType.CannonMinion,"대포미니언", 3, 20, 5 , 30, Item.items[2]));
             };
 
             enmies = enmies.Where(enemy => enemy.level >= minLevel && enemy.level <= maxLevel).ToList();

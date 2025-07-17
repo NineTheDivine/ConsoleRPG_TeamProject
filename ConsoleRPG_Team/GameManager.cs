@@ -34,9 +34,11 @@ namespace ConsoleRPG_Team
                     //임시
                     case SceneType.StoreScene:
                         current = new StoreScene().OnSceneEnter(); break;
-
+                    //임시
                     case SceneType.InventoryScene:
                         current = new InventoryScene().OnSceneEnter(); break;
+                    case SceneType.QuestScene:
+                        current = new QuestScene().OnSceneEnter(); break;
                         
 
 
