@@ -51,16 +51,12 @@ namespace ConsoleRPG_Team.Entities
 
         public virtual int AtkDiff()
         {
-            int randomAtk = random.Next(atk - (atk / 10), atk + (atk / 10) + 1); //현재 int라서 ATK가 10 이하면 랜덤이 안됨
+            int fluctuation = Math.Max(1, (int)Math.Round(atk * 0.1f));
+            int minAtk = Math.Max(0, atk - fluctuation);
+            int maxAtk = atk + fluctuation + 1;
+            int randomAtk = random.Next(minAtk, maxAtk);
 
-            float caculAtk = atk / 10f;
-
-            if (caculAtk >= 0.5f && caculAtk < 1f)
-                return random.Next(atk - 1, atk + 2);
-
-            else
-                return randomAtk;
+            return randomAtk;
         }
-
     }
 }

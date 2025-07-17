@@ -23,6 +23,9 @@ namespace ConsoleRPG_Team.Entities
     {
         public int? beforeHealth { get; set; } = null;
         public int def { get; protected set; }
+        private int BonusAtk { get; set; }
+        private int BonusDef { get; set; }
+            
         public int gold { get; set; }
         public int criticalPro { get; set; } //치명타확률
         public int getExp { get; set; } // 전투후 획득 경험치 표시용
@@ -66,14 +69,17 @@ namespace ConsoleRPG_Team.Entities
         }
         public override int AtkDiff()
         {
-           int criticalChance = random.Next(1, 101);
+            int atk = GetATK();
+            int fluctuation = Math.Max(1, (int)Math.Round(atk * 0.1f));
+            int randomAtk = random.Next(atk - fluctuation, atk + fluctuation + 1);
 
-            if (criticalPro >= criticalChance)
+            int criticalChance = random.Next(1, 101);
+            if(criticalPro > criticalChance)
             {
                 Console.WriteLine("치명타!");
-                return (int)(base.AtkDiff() * 1.6f);
+                randomAtk = (int)(randomAtk * 1.6f);       
             }
-            return base.AtkDiff();
+            return randomAtk;
         }
 
         public void ShowInventory()
@@ -170,34 +176,48 @@ namespace ConsoleRPG_Team.Entities
                 }
                 selectItem.item_isEquiped = true;
                 Console.WriteLine($"{selectItem.item_Name}을 장착했습니다.");
+                UpdateStat();
             }
             else
             {
                 selectItem.item_isEquiped = false;
                 Console.WriteLine($"{selectItem.item_Name}을 장착을 해제했습니다.");
+                UpdateStat();
             }
         }
 
-        //private void UpdateStat()
-        //{
-        //    atk = 15;
-        //    def = 5;
+        private void UpdateStat()
+        {
+            BonusAtk = 0;
+            BonusDef = 0;
 
-        //    foreach (Item item in inventory)
-        //    {
-        //        if (item.item_isEquiped)
-        //        {
-        //            if (item.item_Type == ItemType.Weapon)
-        //            {
-        //                atk += item.item_Pow;
-        //            }
-        //            if (item.item_Type == ItemType.Armor)
-        //            {
-        //                def += item.item_Pow;
-        //            }
-        //        }
-        //    }
-        //}
+            foreach (Item item in inventory)
+            {
+                if (item.item_isEquiped)
+                {
+                    if (item.item_Type == ItemType.Weapon)
+                    {
+                        BonusAtk += item.item_Pow;
+                    }
+                    if (item.item_Type == ItemType.Armor)
+                    {
+                        BonusDef += item.item_Pow;
+                    }
+                }
+            }
+        }
+
+        public int GetATK()
+        {
+            UpdateStat();
+            return atk + BonusAtk;
+        }
+
+        public int GetDef()
+        {
+            UpdateStat();
+            return def + BonusDef;
+        }
 
         public void LevelUp()
         {
