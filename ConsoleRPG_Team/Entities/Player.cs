@@ -32,9 +32,6 @@ namespace ConsoleRPG_Team.Entities
 
         public List<Item> inventory = new List<Item>();
 
-       
-
-
 
         public Player()
         {
@@ -53,6 +50,15 @@ namespace ConsoleRPG_Team.Entities
             criticalPro = 15;
         }
 
+        public override void Attack(Entity target)
+        {
+            base.Attack(target);
+            if (target is Enemy && target.isDead)
+            {
+                Enemy e = target as Enemy;
+                QuestEventBus.Publish(new Quests.QuestID(Quests.QuestType.SlainEnemy, (int)e.enemyType));
+            }
+        }
         public override int AtkDiff()
         {
            int criticalChance = random.Next(1, 101);
