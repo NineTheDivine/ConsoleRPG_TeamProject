@@ -7,15 +7,23 @@ using System.Threading.Tasks;
 
 namespace ConsoleRPG_Team.Entities
 {
+    enum EnemyType 
+    {
+        None = -1,
+        Minion = 0,
+        Voidspawn,
+        CannonMinion,
+    };
     internal class Enemy : Entity
     {
-        //protected int enemyID;
+        public EnemyType enemyType { get; private set; }
         public bool isEXP = false;
 
         public Item dropItem;
         public int dropRate;
-        public Enemy(string name, int level, int health, int atk, int dropRate , Item dropItem)
+        public Enemy(EnemyType eT, string name, int level, int health, int atk, int dropRate , Item dropItem)
         {
+            this.enemyType = eT;
             this.name = name;
             this.level = level;
             this.health = health;
@@ -27,6 +35,7 @@ namespace ConsoleRPG_Team.Entities
 
         public Enemy(Enemy e)
         {
+            this.enemyType = e.enemyType;
             this.name = e.name;
             this.level = e.level;
             this.health = e.health;
