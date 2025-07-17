@@ -31,6 +31,13 @@ namespace ConsoleRPG_Team
                         current = new BattleEndScene().OnSceneEnter(); break;
                     case SceneType.GameOverScene:
                         current = new GameOverScene().OnSceneEnter(); break;
+                    //임시
+                    case SceneType.StoreScene:
+                        current = new StoreScene().OnSceneEnter(); break;
+
+                    case SceneType.InventoryScene:
+                        current = new InventoryScene().OnSceneEnter(); break;
+                        
 
 
 

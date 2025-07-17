@@ -29,7 +29,7 @@ namespace ConsoleRPG_Team.Entities
             if (isDead)
                 return;
 
-            if ( attackMiss <= 10)
+            if (attackMiss <= 10)
             {
                 Console.WriteLine("{0:5} 의 공격!", this.name);
                 Console.WriteLine($"{target.name}은 공격을 회피했다!");
