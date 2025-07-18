@@ -22,6 +22,8 @@ namespace ConsoleRPG_Team.Scenes
         }
         public override SceneType OnSceneEnter()
         {
+            Console.WriteLine("\n상점에 오신것을 환영합니다.");
+            
             int? input = AskInput(0, 3, this.inputstream);
             switch(input)
             {

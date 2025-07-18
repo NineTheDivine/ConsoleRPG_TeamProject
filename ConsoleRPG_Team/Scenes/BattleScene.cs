@@ -166,21 +166,31 @@ namespace ConsoleRPG_Team.Scenes
                         else
                         {
                             int beforeEnemeyHealth = this.enemyWave.spawnEnemies[(int)target - 1].health;
-                            GameManager.playerInstance.UseSkill(this.enemyWave.spawnEnemies[(int)target - 1]);
-                            Console.WriteLine();
-                            Console.WriteLine("Lv.{0:D2} {1:8}", this.enemyWave.spawnEnemies[(int)target - 1].level, this.enemyWave.spawnEnemies[(int)target - 1].name);
-                            Console.WriteLine("HP {0:3} -> {1:4}", beforeEnemeyHealth.ToString(),
-                                this.enemyWave.spawnEnemies[(int)target - 1].isDead ? "Dead" : this.enemyWave.spawnEnemies[(int)target - 1].health.ToString());
-                            if (this.enemyWave.spawnEnemies[(int)target - 1].isDead)
+
+                            bool success = GameManager.playerInstance.UseSkill(this.enemyWave.spawnEnemies[(int)target - 1]);
+
+                            if(success)
                             {
-                                _enemyCount--;
-                                this.enemyWave.spawnEnemies[(int)target - 1].GiveExp();
-                                GameManager.playerInstance.getExp += this.enemyWave.spawnEnemies[(int)target - 1].exp;
-                                this.enemyWave.spawnEnemies[(int)target - 1].DropItem();
+                                Console.WriteLine();
+                                Console.WriteLine("Lv.{0:D2} {1:8}", this.enemyWave.spawnEnemies[(int)target - 1].level, this.enemyWave.spawnEnemies[(int)target - 1].name);
+                                Console.WriteLine("HP {0:3} -> {1:4}", beforeEnemeyHealth.ToString(),
+                                    this.enemyWave.spawnEnemies[(int)target - 1].isDead ? "Dead" : this.enemyWave.spawnEnemies[(int)target - 1].health.ToString());
+                                if (this.enemyWave.spawnEnemies[(int)target - 1].isDead)
+                                {
+                                    _enemyCount--;
+                                    this.enemyWave.spawnEnemies[(int)target - 1].GiveExp();
+                                    GameManager.playerInstance.getExp += this.enemyWave.spawnEnemies[(int)target - 1].exp;
+                                    this.enemyWave.spawnEnemies[(int)target - 1].DropItem();
+                                }
+                                while (AskInput(0, 0, nextstream, "") == null)
+                                    continue;
                             }
-                            while (AskInput(0, 0, nextstream, "") == null)
-                                continue;
+                            else
+                            {
+                                input = null;
+                            }
                         }
+                            
                     } // 테스트
                     else if(input == 3) // 아이템 사용
                     {
