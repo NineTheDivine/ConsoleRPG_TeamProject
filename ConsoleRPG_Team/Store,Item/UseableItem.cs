@@ -42,7 +42,7 @@ namespace ConsoleRPG_Team.Store_Item
                 {
                     target.mana = target.maxMana;
                 }
-                Console.WriteLine($"마나가 {manaAmount}만큼 회복됐습니다! 현재마나{target.mana}");
+                Console.WriteLine($"마나가 {manaAmount}만큼 회복됐습니다! 현재마나{target.health}");
             }    
         }
     }
