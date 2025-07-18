@@ -144,7 +144,7 @@ namespace ConsoleRPG_Team.Entities
         }
         public bool UseItemInBattle()
         {
-            var items = inventory.Where(item => item is UseableItem).ToList();
+            var items = inventory.Where(item => item is UseableItem && item.item_Type == ItemType.Consumable ).ToList();
 
             if(items.Count == 0)
             {
@@ -324,26 +324,29 @@ namespace ConsoleRPG_Team.Entities
             }
         }
 
-        public void UseSkill(Entity target)
+        public bool UseSkill(Entity target)
         {
             int attackMiss = random.Next(1, 101);
             int skillDamage = 0;
 
             if (isDead)
-                return;
+                return false;
+
+            if (this.mana < 20)
+            {
+                Console.WriteLine($"{name}은 마나가 부족해서 스킬을 사용할수 없다.");
+                return false;
+            }
+
 
             if (attackMiss <= 10)
             {
                 Console.WriteLine("{0:5} 의 공격!", this.name);
                 Console.WriteLine($"{target.name}은 공격을 회피했다!");
+                return true;
             }
 
-            if (this.mana < 20)
-            {
-                Console.WriteLine($"{name}은 마나가 부족해서 스킬을 사용할수 없다.");
-                return;
-            }
-
+            
             mana -= 20;
 
             switch (this.playerClass)
@@ -359,8 +362,7 @@ namespace ConsoleRPG_Team.Entities
                     }
                     Console.WriteLine("{0:5} 의 강하게 때리기!!", this.name);
                     Console.WriteLine($"{target.name}의 체력을 {skillDamage} 깎았습니다.");
-
-                    break;
+                    return true;
 
                 case PlayerClass.Warrior:
                     skillDamage = WarriorSkill();
@@ -375,7 +377,8 @@ namespace ConsoleRPG_Team.Entities
 
                     Console.WriteLine("{0:5} 의 파워 스트라이크!!", this.name);
                     Console.WriteLine($"{target.name}의 체력을 {skillDamage} 깎았습니다.");
-                    break;
+                    return true;
+
 
 
                 case PlayerClass.Mage:
@@ -391,8 +394,7 @@ namespace ConsoleRPG_Team.Entities
 
                     Console.WriteLine("{0:5} 의 파이어볼!!", this.name);
                     Console.WriteLine($"{target.name}의 체력을 {skillDamage} 깎았습니다.");
-
-                    break;
+                    return true;
 
                 case PlayerClass.Rogue:
                     skillDamage = RogueSkill();
@@ -409,10 +411,10 @@ namespace ConsoleRPG_Team.Entities
                     Console.WriteLine($"{target.name}의 체력을 {skillDamage} 깎았습니다.");
                     Console.WriteLine($"{target.name}의 체력을 {skillDamage} 깎았습니다.");
                     Console.WriteLine($"{target.name}의 체력을 {skillDamage} 깎았습니다.");
-                    break;
+                    return true;
 
                 default:
-                    return;
+                    return false;
 
             }
         }
