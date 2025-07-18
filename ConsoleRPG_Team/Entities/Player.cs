@@ -23,9 +23,8 @@ namespace ConsoleRPG_Team.Entities
     {
         public int? beforeHealth { get; set; } = null;
         public int def { get; protected set; }
-   
-        private int BonusAtk { get; set; }
-        private int BonusDef { get; set; }
+        protected int BonusAtk { get; set; }
+        protected int BonusDef { get; set; }
 
         public int gold { get; set; }
         public int criticalPro { get; set; } //치명타확률
@@ -33,9 +32,9 @@ namespace ConsoleRPG_Team.Entities
         public int maxExp => levelExp[level]; // Status 표시용
         public Quest? currentQuest { get; set; } = null;
 
-        bool chooseClass = false;
+        public bool chooseClass { get; protected set; } = false;
 
-        private int[] levelExp = { 0, 10, 35, 65, 100 }; // 레벨별 필요 경험치
+        protected int[] levelExp = { 0, 10, 35, 65, 100 }; // 레벨별 필요 경험치
 
         public PlayerClass playerClass { get; protected set; }
 
@@ -47,7 +46,7 @@ namespace ConsoleRPG_Team.Entities
             name = "주인공"; // 추후 입력해서 설정
             level = 1;
             atk = 5;
-            def = 5;
+            def = 1;
             health = 100;
             mana = 50;
             maxMana = 50;
@@ -61,15 +60,26 @@ namespace ConsoleRPG_Team.Entities
             criticalPro = 15;
         }
 
-        public override void Attack(Entity target)
+        public Player(Player p)
         {
-            base.Attack(target);
-            if (target is Enemy && target.isDead)
-            {
-                Enemy e = target as Enemy;
-                QuestEventBus.Publish(new QuestID(QuestType.SlainEnemy, (int)e.enemyType));
-            }
+            name = p.name;
+            level = p.level;
+            atk = p.atk;
+            def = p.def;
+            health = p.health;
+            mana = p.mana;
+            maxMana = p.maxMana;
+            beforeHealth = p.beforeHealth;
+            playerClass = p.playerClass;
+            maxHealth = p.maxHealth;
+            gold = p.gold;
+            exp = p.exp;
+            isDead = p.isDead;
+            criticalPro = p.criticalPro;
+            inventory = p.inventory;
+            currentQuest = p.currentQuest;
         }
+
         public override int AtkDiff()
         {
             int atk = GetATK();
@@ -118,12 +128,19 @@ namespace ConsoleRPG_Team.Entities
                 Console.WriteLine("장착 or 해제 하시고 싶은 아이템을 선택해 주세요. 나가려면 0을 눌러주세요.");
 
                 int select = 0;
+
                 bool isSelect = int.TryParse(Console.ReadLine(), out select);
+
+                if(!isSelect)
+                {
+                    Console.WriteLine("숫자를 입력해주세요.");
+                    continue;
+                }
 
                 if (select == 0)
                     break;
 
-                if (!isSelect || select > inventory.Count || select < 0)
+                if (select > inventory.Count || select < 0)
                 {
                     Console.WriteLine("잘못된 입력");
                     continue;
@@ -144,7 +161,7 @@ namespace ConsoleRPG_Team.Entities
         }
         public bool UseItemInBattle()
         {
-            var items = inventory.Where(item => item is UseableItem && item.item_Type == ItemType.Consumable ).ToList();
+            var items = inventory.Where(item => item is UseableItem && item.item_Type == ItemType.Consumable).ToList();
 
             if(items.Count == 0)
             {
@@ -159,11 +176,8 @@ namespace ConsoleRPG_Team.Entities
             }
             Console.WriteLine("0. 취소");
 
-            int choice;
-
             do
             {
-
                 Console.WriteLine("번호를 입력하세요.");
                 int select;
                 bool isNum = int.TryParse(Console.ReadLine(), out select);
@@ -226,7 +240,7 @@ namespace ConsoleRPG_Team.Entities
             }
         }
 
-        private void UpdateStat()
+        public void UpdateStat()
         {
             BonusAtk = 0;
             BonusDef = 0;
@@ -269,183 +283,40 @@ namespace ConsoleRPG_Team.Entities
                 def += 1;
                 Console.WriteLine($"레벨업! 현재레벨{level} 공격력 방어력이 + 1 되었습니다.");
             }
-
-            if (playerClass == PlayerClass.None && level >= 3)
-            {
-                GetClass();
-            }
         }
 
-        private void GetClass()
-        {
-            while (!chooseClass)
 
+        public virtual bool UseSkill(List<Enemy> targets)
+        {
+            if (targets.Count != 1)
             {
-                Console.WriteLine("전직할수 있습니다 어떤 직업으로 하시겠습니까?.");
-                Console.WriteLine("1.전사 2.마법사 3.도적");
-
-                int select = 0;
-                bool isSelect = int.TryParse(Console.ReadLine(), out select);
-
-                if (!isSelect)
-                {
-                    Console.WriteLine("숫자로 선택해주세요.");
-                    continue;
-                }
-
-                switch (select)
-                {
-                    case 1:
-                        playerClass = PlayerClass.Warrior;
-                        chooseClass = true;
-                        maxHealth += 10;
-                        Console.WriteLine("최대체력 10 증가 공격력 2증가");
-                        atk += 2;
-                        break;
-                    case 2:
-                        playerClass = PlayerClass.Mage;
-                        chooseClass = true;
-                        atk += 1;
-                        maxMana += 20;
-                        Console.WriteLine("공격력 1증가 최대마나 +20");
-                        break;
-                    case 3:
-                        playerClass = PlayerClass.Rogue;
-                        chooseClass = true;
-                        criticalPro += 10;
-
-                        Console.WriteLine("치명타확률 10% 증가");
-                        break;
-                    default:
-                        Console.WriteLine("당신은 아무 직업도 선택하지 않았다..");
-                        chooseClass = true;
-                        break;
-                }
-            }
-        }
-
-        public bool UseSkill(Entity target)
-        {
-            int attackMiss = random.Next(1, 101);
-            int skillDamage = 0;
-
-            if (isDead)
+                Console.WriteLine("잘못된 대상 지정입니다.");
                 return false;
-
+            }
+            Enemy enemy = targets[0];
             if (this.mana < 20)
             {
                 Console.WriteLine($"{name}은 마나가 부족해서 스킬을 사용할수 없다.");
                 return false;
             }
 
-
-            if (attackMiss <= 10)
-            {
-                Console.WriteLine("{0:5} 의 공격!", this.name);
-                Console.WriteLine($"{target.name}은 공격을 회피했다!");
-                return true;
-            }
-
-            
             mana -= 20;
+            int skillDamage = NoneSKill();
 
-            switch (this.playerClass)
-            {
-                case PlayerClass.None:
-                    skillDamage = NoneSKill();
-
-                    target.health -= skillDamage;
-                    if (target.health <= 0)
-                    {
-                        target.health = 0;
-                        target.isDead = true;
-                    }
-                    Console.WriteLine("{0:5} 의 강하게 때리기!!", this.name);
-                    Console.WriteLine($"{target.name}의 체력을 {skillDamage} 깎았습니다.");
-                    return true;
-
-                case PlayerClass.Warrior:
-                    skillDamage = WarriorSkill();
-
-                    target.health -= skillDamage;
-
-                    if (target.health <= 0)
-                    {
-                        target.health = 0;
-                        target.isDead = true;
-                    }
-
-                    Console.WriteLine("{0:5} 의 파워 스트라이크!!", this.name);
-                    Console.WriteLine($"{target.name}의 체력을 {skillDamage} 깎았습니다.");
-                    return true;
-
-
-
-                case PlayerClass.Mage:
-                    skillDamage = MageSkill();
-
-                    target.health -= skillDamage;
-
-                    if (target.health <= 0)
-                    {
-                        target.health = 0;
-                        target.isDead = true;
-                    }
-
-                    Console.WriteLine("{0:5} 의 파이어볼!!", this.name);
-                    Console.WriteLine($"{target.name}의 체력을 {skillDamage} 깎았습니다.");
-                    return true;
-
-                case PlayerClass.Rogue:
-                    skillDamage = RogueSkill();
-
-                    target.health -= skillDamage * 3;
-
-                    if (target.health <= 0)
-                    {
-                        target.health = 0;
-                        target.isDead = true;
-                    }
-                    Console.WriteLine("{0:5} 의 연속 찌르기!", this.name);
-
-                    Console.WriteLine($"{target.name}의 체력을 {skillDamage} 깎았습니다.");
-                    Console.WriteLine($"{target.name}의 체력을 {skillDamage} 깎았습니다.");
-                    Console.WriteLine($"{target.name}의 체력을 {skillDamage} 깎았습니다.");
-                    return true;
-
-                default:
-                    return false;
-
-            }
+            Console.WriteLine($"[강하게 때리기] {name}이 최선을 다해 공격을 했다.");
+            Console.WriteLine();
+            Console.WriteLine("{0:5} 의 강하게 때리기!!", this.name);
+            Attack(enemy, skillDamage, true);
+            Console.WriteLine();
+            return true;
         }
 
         private int NoneSKill()
         {
             int dmg = (int)(AtkDiff() * 1.2f);
-            Console.WriteLine($"[강하게 때리기] {name}이 최선을 다해 공격을 했다.");
             return dmg;
         }
 
-        private int WarriorSkill()
-        {
-            int dmg = (int)(AtkDiff() * 2.0f);
-            Console.WriteLine($"[더블 스트라이크] {name}이 강력한 일격을 날렸다!");
-            return dmg;
-        }
-
-        private int MageSkill()
-        {
-            int dmg = (int)(AtkDiff() * 2.0f);
-            Console.WriteLine($"[파이어볼] {name}이 화염구를 발사했다!");
-            return dmg;
-        }
-
-        private int RogueSkill()
-        {
-            int dmg = (int)(AtkDiff() * 0.7f);
-            Console.WriteLine($"[백스탭] {name}이 적의 뒤를 찔렀다!");
-            return dmg;
-        }
 
         public void GetItem(Item item)
         {
@@ -457,19 +328,59 @@ namespace ConsoleRPG_Team.Entities
             }
             else
             {
-                UseableItem newItem = new UseableItem()
+                if (item is UseableItem)
                 {
-                    item_ID = item.item_ID,
-                    item_Name = item.item_Name,
-                    item_Pow = item.item_Pow,
-                    item_Description = item.item_Description,
-                    item_Type = item.item_Type,
-                    item_Price = item.item_Price,
-                    item_Grade = item.item_Grade,
-                    item_quantity = 1
-                };
-                inventory.Add(newItem);
+                    UseableItem newItem = new UseableItem()
+                    {
+                        item_ID = item.item_ID,
+                        item_Name = item.item_Name,
+                        item_Pow = item.item_Pow,
+                        item_Description = item.item_Description,
+                        item_Type = item.item_Type,
+                        item_Price = item.item_Price,
+                        item_Grade = item.item_Grade,
+                        item_quantity = 1,
+                        healAmount = (item as UseableItem)?.healAmount ?? 0,
+                        manaAmount = (item as UseableItem)?.manaAmount ?? 0
+                    };
+                    inventory.Add(newItem);
+                }
+                else
+                {
+                    Item newItem = new Item()
+                    {
+                        item_ID = item.item_ID,
+                        item_Name = item.item_Name,
+                        item_Pow = item.item_Pow,
+                        item_Description = item.item_Description,
+                        item_Type = item.item_Type,
+                        item_Price = item.item_Price,
+                        item_Grade = item.item_Grade,
+                        item_quantity = 1
+                    };
+                    inventory.Add(newItem);
+                }
             }
+        }
+
+        public void ChangeName()
+        {
+            Console.WriteLine("바꿀 이름을 작성해주세요.");
+            string name = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Console.WriteLine("이름은 비어있을 수 없습니다.");
+                return;
+            }
+
+            if(name.Length > 10)
+            {
+                Console.WriteLine("이름이 너무 깁니다. 10자 이내로 줄여주세요.");
+                return;
+            }
+
+            this.name = name;
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleRPG_Team.Scenes
 {
+
     internal class BattleScene : Scene
     {
         protected EnemyWave enemyWave;
@@ -36,166 +37,106 @@ namespace ConsoleRPG_Team.Scenes
                 Console.WriteLine("0 Length Enemy Wave at BattleScene");
                 return SceneType.Quit;
             }
-            do
+            while(true)
             {
-                //Header
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Battle!!");
-                Console.ResetColor();
-                Console.WriteLine();
-
-                //Enemy Info
-                foreach (Enemy enemy in enemyWave.spawnEnemies)
-                {
-                    if (enemy.isDead)
-                    {
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
-                        Console.WriteLine("Lv.{0:D2} {1:8} Dead", enemy.level, enemy.name);
-                        Console.ResetColor();                  
-                    }  
-                    else
-                        Console.WriteLine("Lv.{0:D2} {1:8} HP {2,-3}", enemy.level, enemy.name, enemy.health.ToString());
-                }
-
-                //Player Info
-                Console.WriteLine("[ 내 정보 ]");
-                Console.WriteLine("Lv.{0:D2} Chad ( {1:4} )", GameManager.playerInstance.level, /*Need to be fixed */GameManager.playerInstance.name);
-                Console.WriteLine("HP : {0:-3} / {1:-3}", GameManager.playerInstance.health.ToString(), GameManager.playerInstance.maxHealth.ToString());
-                Console.WriteLine("MP : {0:-3} / {1:-3}", GameManager.playerInstance.mana.ToString(), GameManager.playerInstance.maxMana.ToString());
-
-                //Player turn
+        
                 int? input = null;
                 do
                 {
+                    //Header + Player + Enemy Info
+                    _PrintEnemies("Battle", false);
+
+                    //Player turn
                     input = AskInput(1, 3, this.inputstream);
+
+                    //Basic Attack
                     if (input == 1)
                     {
-                        int? target = null;
-                        //when basic attack
-                        do
-                        {
-                            Console.WriteLine();
-                            int enemyindex = 1;
-                            foreach (Enemy enemy in enemyWave.spawnEnemies)
-                            {
-                                Console.ForegroundColor = ConsoleColor.Blue;
-                                Console.Write("{0:2}. ", enemyindex.ToString());
-                                Console.ResetColor();
-                                if (enemy.isDead)
-                                {
-                                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                                    Console.WriteLine("Lv.{0:D2} {1:8} Dead", enemy.level, enemy.name);
-                                    Console.ResetColor();
-                                }
-                                else
-                                    Console.WriteLine("Lv.{0:D2} {1:8} HP {2,-3}", enemy.level, enemy.name, enemy.health.ToString());
-                                enemyindex++;
-                            }
-
-                            target = AskInput(0, (int)GameManager.waveEnemyCount, askstream, "대상을 선택해주세요.");
-                            if (target != null && target != 0 && enemyWave.spawnEnemies[(int)target - 1].isDead)
-                            {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine();
-                                Console.WriteLine("잘못된 입력입니다.");
-                                Console.ResetColor();
-                                target = null;
-                            }
-                        } while (target == null);
-                        //Retrun to select action
+                        int? target = _PrintEnemies("기본 공격!!");
+                        //Cancel
                         if (target == 0)
                             input = null;
-                        //Attack enemy
                         else
                         {
                             int beforeEnemeyHealth = this.enemyWave.spawnEnemies[(int)target - 1].health;
-                            GameManager.playerInstance.Attack(this.enemyWave.spawnEnemies[(int)target - 1]);
+                            GameManager.playerInstance.Attack(enemyWave.spawnEnemies[(int)target - 1]);
+
                             Console.WriteLine();
                             Console.WriteLine("Lv.{0:D2} {1:8}", this.enemyWave.spawnEnemies[(int)target - 1].level, this.enemyWave.spawnEnemies[(int)target - 1].name);
-                            Console.WriteLine("HP {0:3} -> {1:4}", beforeEnemeyHealth.ToString(), 
+                            Console.WriteLine("HP {0:3} -> {1:4}", beforeEnemeyHealth.ToString(),
                                 this.enemyWave.spawnEnemies[(int)target - 1].isDead ? "Dead" : this.enemyWave.spawnEnemies[(int)target - 1].health.ToString());
                             if (this.enemyWave.spawnEnemies[(int)target - 1].isDead)
-                            {
                                 _enemyCount--;
-                                this.enemyWave.spawnEnemies[(int)target - 1].GiveExp();
-                                GameManager.playerInstance.getExp += this.enemyWave.spawnEnemies[(int)target - 1].exp;
-                                this.enemyWave.spawnEnemies[(int)target - 1].DropItem();
-                            }
                             while (AskInput(0, 0, nextstream, "") == null)
                                 continue;
                         }
                     }
-                    else if(input == 2) //테스트
+
+
+                    //OnSkill
+                    else if (input == 2)
                     {
                         int? target = null;
-                        //when basic attack
-                        do
-                        {
-                            Console.WriteLine();
-                            int enemyindex = 1;
-                            foreach (Enemy enemy in enemyWave.spawnEnemies)
-                            {
-                                Console.ForegroundColor = ConsoleColor.Blue;
-                                Console.Write("{0:2}. ", enemyindex.ToString());
-                                Console.ResetColor();
-                                if (enemy.isDead)
-                                {
-                                    Console.ForegroundColor = ConsoleColor.DarkGray;
-                                    Console.WriteLine("Lv.{0:D2} {1:8} Dead", enemy.level, enemy.name);
-                                    Console.ResetColor();
-                                }
-                                else
-                                    Console.WriteLine("Lv.{0:D2} {1:8} HP {2,-3}", enemy.level, enemy.name, enemy.health.ToString());
-                                enemyindex++;
-                            }
+                        List<Enemy> targets = new List<Enemy>();
 
-                            target = AskInput(0, (int)GameManager.waveEnemyCount, askstream, "대상을 선택해주세요.");
-                            if (target != null && target != 0 && enemyWave.spawnEnemies[(int)target - 1].isDead)
-                            {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine();
-                                Console.WriteLine("잘못된 입력입니다.");
-                                Console.ResetColor();
-                                target = null;
-                            }
-                        } while (target == null);
-                        //Retrun to select action
-                        if (target == 0)
-                            input = null;
-                        //Attack enemy
+                        //Mage attacks all with skill
+                        if (GameManager.playerInstance.playerClass == PlayerClass.Mage)
+                        {
+                            _PrintEnemies("스킬 시전!!", false);
+                            int? confirm = AskInput(0, 1, new string[] { "1. 파이어볼 시전", "0. 취소" });
+                            if (confirm == 1)
+                                foreach (Enemy enemy in this.enemyWave.spawnEnemies)
+                                {
+                                    if (enemy.isDead) continue;
+                                    targets.Add(enemy);
+                                }
+                            else
+                                target = 0;
+                        }
+                        //if not, select one
                         else
                         {
-                            int beforeEnemeyHealth = this.enemyWave.spawnEnemies[(int)target - 1].health;
+                            target = _PrintEnemies("스킬 시전!!", true);
+                            
+                            if (target != 0)
+                                targets.Add(this.enemyWave.spawnEnemies[(int)target - 1]);
+                        }
 
-                            bool success = GameManager.playerInstance.UseSkill(this.enemyWave.spawnEnemies[(int)target - 1]);
+                        //Cancel
+                        if (target == 0)
+                            input = null;
 
-                            if(success)
+                        //Attack enemy With Skill
+                        else
+                        {
+                            int[] beforeEnemeyHealth = new int[targets.Count];
+                            for (int i = 0; i < beforeEnemeyHealth.Length; i++)
+                                beforeEnemeyHealth[i] = targets[i].health;
+                            bool success = GameManager.playerInstance.UseSkill(targets);
+                            if (!success)
+                                input = null;
+                            else
                             {
                                 Console.WriteLine();
-                                Console.WriteLine("Lv.{0:D2} {1:8}", this.enemyWave.spawnEnemies[(int)target - 1].level, this.enemyWave.spawnEnemies[(int)target - 1].name);
-                                Console.WriteLine("HP {0:3} -> {1:4}", beforeEnemeyHealth.ToString(),
-                                    this.enemyWave.spawnEnemies[(int)target - 1].isDead ? "Dead" : this.enemyWave.spawnEnemies[(int)target - 1].health.ToString());
-                                if (this.enemyWave.spawnEnemies[(int)target - 1].isDead)
+                                for (int i = 0; i < beforeEnemeyHealth.Length; i++)
                                 {
-                                    _enemyCount--;
-                                    this.enemyWave.spawnEnemies[(int)target - 1].GiveExp();
-                                    GameManager.playerInstance.getExp += this.enemyWave.spawnEnemies[(int)target - 1].exp;
-                                    this.enemyWave.spawnEnemies[(int)target - 1].DropItem();
+                                    Console.WriteLine("Lv.{0:D2} {1:8}", targets[i].level, targets[i].name);
+                                    Console.WriteLine("HP {0:3} -> {1:4}", beforeEnemeyHealth[i].ToString(),
+                                        targets[i].isDead ? "Dead" : targets[i].health.ToString());
+                                    if (targets[i].isDead)
+                                        _enemyCount--;
                                 }
                                 while (AskInput(0, 0, nextstream, "") == null)
                                     continue;
                             }
-                            else
-                            {
-                                input = null;
-                            }
                         }
-                            
-                    } // 테스트
-                    else if(input == 3) // 아이템 사용
+                    }
+
+                    //Use Item
+                    else if (input == 3)
                     {
-                        if(!GameManager.playerInstance.UseItemInBattle())
-                        input = null;
+                        if (!GameManager.playerInstance.UseItemInBattle())
+                            input = null;
                     }
                 } while (input == null);
                 //Player turn end
@@ -219,7 +160,7 @@ namespace ConsoleRPG_Team.Scenes
                     enemy.Attack(GameManager.playerInstance);
                     Console.WriteLine();
                 }
-                Console.WriteLine("Lv.{0:D2} Chad ( {1:4} )", GameManager.playerInstance.level, /*Need to be fixed */GameManager.playerInstance.name);
+                Console.WriteLine("Lv.{0:D2} {1:5} ( {2:8} )", GameManager.playerInstance.level, GameManager.playerInstance.name, GameManager.playerInstance.playerClass.ToString());
                 Console.WriteLine("HP : {0:-3} -> {1:-4}", beforePlayerHP.ToString(),
                 GameManager.playerInstance.isDead ? "Dead" : GameManager.playerInstance.health.ToString());
                 
@@ -232,7 +173,65 @@ namespace ConsoleRPG_Team.Scenes
                 if (GameManager.playerInstance.isDead)
                     return SceneType.GameOverScene;
 
-            } while (true);
+            }
+        }
+
+        private void _PrintPlayerInfo()
+        {
+            Console.WriteLine("[ 내 정보 ]");
+            Console.WriteLine("Lv.{0:D2} {1:5} ( {2:8} )", GameManager.playerInstance.level, GameManager.playerInstance.name, GameManager.playerInstance.playerClass.ToString());
+            Console.WriteLine("HP : {0:-3} / {1:-3}", GameManager.playerInstance.health.ToString(), GameManager.playerInstance.maxHealth.ToString());
+            Console.WriteLine("MP : {0:-3} / {1:-3}", GameManager.playerInstance.mana.ToString(), GameManager.playerInstance.maxMana.ToString());
+        }
+
+        private int? _PrintEnemies(string actionStream = "",  bool isTarget = true)
+        {
+            int? target = null;
+            Console.WriteLine();
+            do
+            {
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine(actionStream);
+                Console.WriteLine();
+                Console.ResetColor();
+
+                _PrintPlayerInfo();
+
+                Console.WriteLine();
+                int enemyindex = 1;
+                foreach (Enemy enemy in enemyWave.spawnEnemies)
+                {
+                    if (isTarget)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write("{0:2}. ", enemyindex.ToString());
+                        Console.ResetColor();
+                    }
+                    if (enemy.isDead)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
+                        Console.WriteLine("Lv.{0:D2} {1:8} Dead", enemy.level, enemy.name);
+                        Console.ResetColor();
+                    }
+                    else
+                        Console.WriteLine("Lv.{0:D2} {1:8} HP {2,-3}", enemy.level, enemy.name, enemy.health.ToString());
+                    enemyindex++;
+                }
+                Console.WriteLine();
+                if (!isTarget)
+                    return null;
+
+                target = AskInput(0, (int)GameManager.waveEnemyCount, askstream, "대상을 선택해주세요.");
+                if (target != null && target != 0 && enemyWave.spawnEnemies[(int)target - 1].isDead)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine();
+                    Console.WriteLine("잘못된 입력입니다.");
+                    Console.ResetColor();
+                    target = null;
+                }
+            } while (target == null);
+            return target;
         }
     }
 }

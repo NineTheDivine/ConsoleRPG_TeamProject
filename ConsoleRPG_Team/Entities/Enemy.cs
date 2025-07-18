@@ -1,4 +1,5 @@
-﻿using ConsoleRPG_Team.Store_Item;
+﻿using ConsoleRPG_Team.Quests;
+using ConsoleRPG_Team.Store_Item;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +52,19 @@ namespace ConsoleRPG_Team.Entities
             this.dropMoney = e.dropMoney;
         }
 
+        public override void TakeDamage(int damage)
+        {
+            base.TakeDamage(damage);
+            if (this.isDead)
+            {
+                QuestEventBus.Publish(new QuestID(QuestType.SlainEnemy, (int)this.enemyType));
+                this.GiveExp();
+                GameManager.playerInstance.getExp += this.exp;
+                this.DropItem();
+            }
+        }
+
+
         public override int AtkDiff()
         {
             int damage = base.AtkDiff() - GameManager.playerInstance.GetDef();
@@ -59,7 +73,7 @@ namespace ConsoleRPG_Team.Entities
         public void DropItem()
         {
             int dropChance = random.Next(1, 101);
-            if (dropRate > dropChance)
+            if (dropRate >= dropChance)
             {
                 Console.WriteLine($"{dropItem.item_Name}을 흭득했습니다.");
                 GameManager.playerInstance.GetItem(dropItem);

@@ -73,6 +73,13 @@ namespace ConsoleRPG_Team.Scenes
                         Console.WriteLine(quest.questInfo.name);
                         Console.WriteLine();
                         Console.WriteLine(quest.questInfo.description);
+                        Console.WriteLine();
+                        Console.WriteLine("퀘스트 완료 보상");
+                        if (quest.questInfo.rewardItem != null)
+                            Console.WriteLine(quest.questInfo.rewardItem.item_Name.ToString());
+                        if (quest.questInfo.rewardGold != 0)
+                            Console.WriteLine(quest.questInfo.rewardGold.ToString() + " G");
+                        Console.WriteLine();
                         Console.WriteLine("퀘스트 진척도 : [ {0:-3} / {1:-3} ]", quest.currentProgress.ToString(), quest.questInfo.finalProgress.ToString());
                         if (quest == GameManager.playerInstance.currentQuest)
                         {
