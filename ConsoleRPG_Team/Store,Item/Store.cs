@@ -15,7 +15,6 @@ namespace ConsoleRPG_Team.Store_Item
         public List<Item> storeItems = new List<Item>();
 
         private Random random = new Random();
-
         public Store()
         {
             StoreRandomItem();
@@ -122,7 +121,7 @@ namespace ConsoleRPG_Team.Store_Item
                 }
                 else
                 {
-                    Console.WriteLine($"{GameManager.playerInstance.gold - buyItem.item_Price}G 가 부족합니다.");
+                    Console.WriteLine($"돈이 부족합니다. {buyItem.item_Price - GameManager.playerInstance.gold}G 가 더 필요합니다.");
                 }
             }
         }
@@ -168,13 +167,20 @@ namespace ConsoleRPG_Team.Store_Item
                 if (inven[select - 1].item_isEquiped)
                 {
                     inven[select - 1].item_isEquiped = false;
+                    GameManager.playerInstance.UpdateStat();
                 }
 
                 Console.WriteLine($"{inven[select - 1].item_Price / 2}G를 받았습니다.");
                 GameManager.playerInstance.gold += inven[select - 1].item_Price / 2;
-                storeItems.Add(inven[select - 1]);
-                inven.RemoveAt(select - 1);
 
+                if (inven[select - 1].item_quantity > 1)
+                {
+                    inven[select - 1].item_quantity--;
+                }
+                else
+                {
+                    inven.RemoveAt(select - 1);
+                }            
             }
         }
 
