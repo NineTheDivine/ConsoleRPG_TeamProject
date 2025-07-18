@@ -18,17 +18,21 @@ namespace ConsoleRPG_Team.Scenes
 
         public override SceneType OnSceneEnter()
         {
+            Console.WriteLine("\n플레이어 인벤토리입니다.");
+
             GameManager.playerInstance.InventorySystem();
 
-            int? input = AskInput(0, 0, this.inputstream);
-            switch (input)
-            {
-                case 0:
-                    return SceneType.StartScene;
-                default:
-                    Console.WriteLine("Unexpected Behaviour at StatusScene");
-                    return SceneType.Quit;
-            }
+            return SceneType.StartScene;
+
+            //int? input = AskInput(0, 0, this.inputstream);
+            //switch (input)
+            //{
+            //    case 0:
+            //        
+            //    default:
+            //        Console.WriteLine("Unexpected Behaviour at StatusScene");
+            //        return SceneType.Quit;
+            //}
         }
     }
 }
