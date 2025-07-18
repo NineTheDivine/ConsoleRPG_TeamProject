@@ -43,10 +43,10 @@ namespace ConsoleRPG_Team.Entities
             int actualHit = 0;
             while(actualHit < hitCount)
             {
+                actualHit++;
                 Attack(enemy, RogueSkill(), true);
                 if (enemy.isDead)
                     break;
-                actualHit++;
             }
             Console.WriteLine();
             Console.WriteLine($"총 {actualHit} 번 공격했다!");
