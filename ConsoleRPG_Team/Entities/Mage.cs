@@ -18,6 +18,7 @@ namespace ConsoleRPG_Team.Entities
             chooseClass = true;
             atk += 1;
             maxMana += 20;
+            mana += 20;
             Console.WriteLine("공격력 1증가 최대마나 +20");
         }
         public override bool UseSkill(List<Enemy> targets)

@@ -29,6 +29,7 @@ namespace ConsoleRPG_Team.Store_Item
             if(healAmount > 0)
             {
                 target.health += this.healAmount;
+
                 if (target.health > target.maxHealth)
                 {
                     target.health = target.maxHealth;
@@ -38,11 +39,12 @@ namespace ConsoleRPG_Team.Store_Item
             if(manaAmount > 0)
             {
                 target.mana += this.manaAmount;
+
                 if(target.mana > target.maxMana)
                 {
                     target.mana = target.maxMana;
                 }
-                Console.WriteLine($"마나가 {manaAmount}만큼 회복됐습니다! 현재마나{target.health}");
+                Console.WriteLine($"마나가 {manaAmount}만큼 회복됐습니다! 현재마나{target.mana}");
             }    
         }
     }
