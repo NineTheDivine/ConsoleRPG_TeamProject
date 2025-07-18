@@ -59,7 +59,7 @@ namespace ConsoleRPG_Team.Entities
         public void DropItem()
         {
             int dropChance = random.Next(1, 101);
-            if (dropRate > dropChance)
+            if (dropRate >= dropChance)
             {
                 Console.WriteLine($"{dropItem.item_Name}을 흭득했습니다.");
                 GameManager.playerInstance.GetItem(dropItem);
