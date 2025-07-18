@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 public enum ItemType
 {
@@ -21,7 +23,7 @@ public enum ItemGrade
 }
 namespace ConsoleRPG_Team.Store_Item
 {
-    internal class Item
+    public class Item
     {
         public int item_ID { get; set; }
         public string item_Name { get; set; }
@@ -85,6 +87,17 @@ namespace ConsoleRPG_Team.Store_Item
             item_Price = price;
             item_Type = type;
             item_Grade = grade;
+        }
+
+        public Item(Item item)
+        {
+            item_ID = item.item_ID;
+            item_Name = item.item_Name;
+            item_Pow =item.item_Pow;
+            item_Description = item.item_Description;
+            item_Price = item.item_Price;
+            item_Type = item.item_Type;
+            item_Grade = item.item_Grade;
         }
 
         public Item()

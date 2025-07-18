@@ -77,6 +77,7 @@ namespace ConsoleRPG_Team.Entities
             isDead = p.isDead;
             criticalPro = p.criticalPro;
             inventory = p.inventory;
+            currentQuest = p.currentQuest;
         }
 
         public override int AtkDiff()
