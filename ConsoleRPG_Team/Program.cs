@@ -11,14 +11,7 @@ namespace ConsoleRPG_Team
     {
         static void Main(string[] args)
         {
-            //Store store = new Store();
-
-            //store.Buy();
-
-            //GameManager.playerInstance.EquipItem();
-
             GameManager.OnPlay();
-
         }
     }
 }
