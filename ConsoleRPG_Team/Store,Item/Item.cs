@@ -14,7 +14,7 @@ public enum ItemType
 }
 public enum ItemGrade
 {
-    Common,
+    Common = 1,
     Rare,
     Epic,
     Legendary
@@ -29,6 +29,8 @@ namespace ConsoleRPG_Team.Store_Item
         public string item_Description { get; set; }
         public int item_Price { get; set; }
 
+        public int item_quantity { get; set; } = 1; // 같은아이템 중첩되게
+        public int item_Upgrade { get; set; } = 0; //업그레이드
         public ItemType item_Type { get; set; }
 
         public ItemGrade item_Grade { get; set; }
@@ -36,18 +38,42 @@ namespace ConsoleRPG_Team.Store_Item
         public bool item_isEquiped = false;
         public bool item_isSelled = false;
 
-        public readonly static Item[] items = new Item[10]
+        public readonly static Item[] items = new Item[30]
         {
-            new Item(1, "녹슨 검", 5, "녹슬고 이가 다 나간 검.", 100, ItemType.Weapon , ItemGrade.Common),
-            new Item(2, "강철 도끼", 8, "강철로 만든 무거운 도끼.", 150, ItemType.Weapon ,ItemGrade.Rare),
-            new Item(3, "마법 지팡이", 6, "마력을 품은 오래된 지팡이.", 200, ItemType.Weapon , ItemGrade.Epic ),
-            new Item(4, "엑스칼리버", 10, "전설에 등장하는 성검(聖劍)", 500, ItemType.Weapon , ItemGrade.Legendary),
-            new Item(5, "가죽 방어구", 3, "가죽으로 만든 방어구.", 80, ItemType.Armor , ItemGrade.Common),
-            new Item(6, "철제 방패", 5, "튼튼한 철로 만든 방패.", 120, ItemType.Armor , ItemGrade.Rare),
-            new Item(7, "마법 망토", 2, "마법 저항을 올려주는 망토.", 250, ItemType.Armor, ItemGrade.Epic),
-            new Item(8, "용의 비늘", 10, "용의 비늘로 만든 갑옷", 500, ItemType.Armor , ItemGrade.Legendary),
-            new UseableItem(9, "체력 포션", "체력을 50 회복시켜준다.", 30, ItemType.Consumable, 50, 0),
-            new UseableItem(10, "마나 포션", "마나를 30 회복시켜준다.", 30, ItemType.Consumable, 0, 30),
+            new UseableItem(1, "체력 포션", "체력을 50 회복시켜준다.", 100, ItemType.Consumable, 50, 0),
+            new UseableItem(2, "마나 포션", "마나를 30 회복시켜준다.", 100, ItemType.Consumable, 0, 30),
+
+            new Item(3, "낡은 단검", 1, "쉽게 구할 수 있는 단검.", 100, ItemType.Weapon, ItemGrade.Common),
+            new Item(4, "짧은 검", 2, "초보자가 쓰는 짧은 검.", 200, ItemType.Weapon, ItemGrade.Common),
+            new Item(5, "녹슨 검", 1, "녹슬고 이가 다 나간 검.", 250, ItemType.Weapon, ItemGrade.Common),
+            new Item(6, "가죽 방어구", 1, "가죽으로 만든 방어구.", 300, ItemType.Armor, ItemGrade.Common),
+            new Item(7, "가죽 모자", 1, "가죽으로 만든 간단한 모자.", 150, ItemType.Armor, ItemGrade.Common),
+            new Item(8, "천 조끼", 1, "가벼운 천으로 만든 조끼.", 120, ItemType.Armor, ItemGrade.Common),
+            new Item(9, "나무 방패", 1, "간단한 나무 방패.", 130, ItemType.Armor, ItemGrade.Common),
+            new Item(10, "사냥용 활", 2, "기본 사냥용 활.", 180, ItemType.Weapon, ItemGrade.Common),
+            new Item(11, "낡은 활", 1, "오래된 활.", 160, ItemType.Weapon, ItemGrade.Common),
+            new Item(12, "낡은 투구", 1, "오래된 투구.", 140, ItemType.Armor, ItemGrade.Common),
+
+            new Item(13, "강철 도끼", 3, "강철로 만든 무거운 도끼.", 400, ItemType.Weapon, ItemGrade.Rare),
+            new Item(14, "철제 방패", 3, "튼튼한 철로 만든 방패.", 500, ItemType.Armor, ItemGrade.Rare),
+            new Item(15, "은빛 방패", 4, "은으로 만든 튼튼한 방패.", 700, ItemType.Armor, ItemGrade.Rare),
+            new Item(16, "그림자 단검", 4, "어둠을 두른 단검.", 600, ItemType.Weapon, ItemGrade.Rare),
+            new Item(17, "철 갑옷", 3, "단단한 철로 된 갑옷.", 500, ItemType.Armor, ItemGrade.Rare),
+            new Item(18, "화염 지팡이", 5, "불의 힘을 지닌 지팡이.", 850, ItemType.Weapon, ItemGrade.Rare),
+            new Item(19, "스틸 해머", 7, "강철로 만들어진 무거운 망치.", 950, ItemType.Weapon, ItemGrade.Rare),
+            new Item(20, "독의 단검", 4, "독이 묻어있는 단검.", 700, ItemType.Weapon, ItemGrade.Rare),
+
+            new Item(21, "마법 지팡이", 6, "마력을 품은 오래된 지팡이.", 800, ItemType.Weapon, ItemGrade.Epic),
+            new Item(22, "마법 망토", 6, "마법 저항을 올려주는 망토.", 900, ItemType.Armor, ItemGrade.Epic),
+            new Item(23, "마나 로브", 7, "마법사가 즐겨 입는 로브.", 1000, ItemType.Armor, ItemGrade.Epic),
+            new Item(24, "명검 플레어", 8, "불꽃의 힘이 깃든 명검.", 1200, ItemType.Weapon, ItemGrade.Epic),
+            new Item(25, "빙결 검", 6, "적을 얼리는 검.", 900, ItemType.Weapon, ItemGrade.Epic),
+            new Item(26, "사파이어 방패", 5, "사파이어가 박힌 방패.", 800, ItemType.Armor, ItemGrade.Epic),
+
+            new Item(27, "엑스칼리버", 10, "전설에 등장하는 성검(聖劍)", 1500, ItemType.Weapon, ItemGrade.Legendary),
+            new Item(28, "용의 비늘", 10, "용의 비늘로 만든 갑옷", 1750, ItemType.Armor, ItemGrade.Legendary),
+            new Item(29, "피닉스 갑옷", 15, "피닉스의 불꽃이 깃든 갑옷.", 3500, ItemType.Armor, ItemGrade.Legendary),
+            new Item(30, "드래곤 슬레이어", 20, "용을 베는 전설의 검.", 5000, ItemType.Weapon, ItemGrade.Legendary)
         };
 
         public Item(int ID, string name, int pow, string description, int price, ItemType type, ItemGrade grade)
@@ -58,7 +84,7 @@ namespace ConsoleRPG_Team.Store_Item
             item_Description = description;
             item_Price = price;
             item_Type = type;
-            item_Grade = grade;   
+            item_Grade = grade;
         }
 
         public Item()

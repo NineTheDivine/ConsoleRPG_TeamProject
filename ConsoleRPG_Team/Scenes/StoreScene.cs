@@ -16,12 +16,13 @@ namespace ConsoleRPG_Team.Scenes
             {
                 "0. 나가기",
                 "1. 구매하기",
-                "2. 판매하기"
+                "2. 판매하기",
+                "3. 업그레이드"
             };
         }
         public override SceneType OnSceneEnter()
         {
-            int? input = AskInput(0, 2, this.inputstream);
+            int? input = AskInput(0, 3, this.inputstream);
             switch(input)
             {
                 case 0:
@@ -33,6 +34,10 @@ namespace ConsoleRPG_Team.Scenes
 
                 case 2:
                     store.Sell();
+                    return SceneType.StoreScene;
+
+                case 3:
+                    store.Upgrade();
                     return SceneType.StoreScene;
 
                 default:

@@ -13,7 +13,9 @@ namespace ConsoleRPG_Team.Entities
         public int atk { get; protected set; }
         public int health { get; set; }
         public int maxHealth { get; protected set; }
-        public bool isDead { get; protected set; } = false;
+        public int mana { get; set; } // 마나
+        public int maxMana { get; protected set; }
+        public bool isDead { get; set; } = false;
 
         public int exp { get; set; }
 
@@ -28,7 +30,6 @@ namespace ConsoleRPG_Team.Entities
 
             if (isDead)
                 return;
-
             if (attackMiss <= 10)
             {
                 Console.WriteLine("{0:5} 의 공격!", this.name);
@@ -37,30 +38,34 @@ namespace ConsoleRPG_Team.Entities
             else
             {
                 int randomAtk = AtkDiff();
-                target.health -= randomAtk;
-                if (target.health <= 0)
+                if(randomAtk == 0)
                 {
-                    target.health = 0;
-                    target.isDead = true;
-
+                    Console.WriteLine("{0:5} 의 공격!", this.name);
+                    Console.WriteLine($"{target.name}은 흠도 나지 않았다!");
                 }
-                Console.WriteLine("{0:5} 의 공격!", this.name);
-                Console.WriteLine($"{target.name}의 체력을 {randomAtk} 깎았습니다.");
+                else
+                {
+                    target.health -= randomAtk;
+                    if (target.health <= 0)
+                    {
+                        target.health = 0;
+                        target.isDead = true;
+
+                    }
+                    Console.WriteLine("{0:5} 의 공격!", this.name);
+                    Console.WriteLine($"{target.name}의 체력을 {randomAtk} 깎았습니다.");
+                }       
             }       
          }
 
         public virtual int AtkDiff()
         {
-            int randomAtk = random.Next(atk - (atk / 10), atk + (atk / 10) + 1); //현재 int라서 ATK가 10 이하면 랜덤이 안됨
+            int fluctuation = Math.Max(1, (int)Math.Round(atk * 0.1f));
+            int minAtk = Math.Max(0, atk - fluctuation); 
+            int maxAtk = atk + fluctuation + 1;
+            int randomAtk = random.Next(minAtk, maxAtk);
 
-            float caculAtk = atk / 10f;
-
-            if (caculAtk >= 0.5f && caculAtk < 1f)
-                return random.Next(atk - 1, atk + 2);
-
-            else
-                return randomAtk;
+            return randomAtk;
         }
-
     }
 }

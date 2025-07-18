@@ -20,8 +20,10 @@ namespace ConsoleRPG_Team.Entities
         public bool isEXP = false;
 
         public Item dropItem;
+
         public int dropRate;
-        public Enemy(EnemyType eT, string name, int level, int health, int atk, int dropRate , Item dropItem)
+        public int dropMoney {  get; private set; }
+        public Enemy(EnemyType eT, string name, int level, int health, int atk, int dropRate , Item dropItem ,int dropMoney )
         {
             this.enemyType = eT;
             this.name = name;
@@ -31,6 +33,7 @@ namespace ConsoleRPG_Team.Entities
             this.exp = level * 3;
             this.dropRate = dropRate;
             this.dropItem = dropItem;
+            this.dropMoney = dropMoney;
         }
 
         public Enemy(Enemy e)
@@ -45,17 +48,24 @@ namespace ConsoleRPG_Team.Entities
             this.isDead = false;
             this.dropRate = e.dropRate;
             this.dropItem = e.dropItem;
+            this.dropMoney = e.dropMoney;
         }
 
+        public override int AtkDiff()
+        {
+            int damage = base.AtkDiff() - GameManager.playerInstance.GetDef();
+            return Math.Max(0, damage);
+        }
         public void DropItem()
         {
-            Random random = new Random();
             int dropChance = random.Next(1, 101);
-            if(dropRate > dropChance)
+            if (dropRate > dropChance)
             {
                 Console.WriteLine($"{dropItem.item_Name}을 흭득했습니다.");
-                GameManager.playerInstance.inventory.Add(dropItem);
+                GameManager.playerInstance.GetItem(dropItem);
             }
+            Console.WriteLine($"{dropMoney}G을 흭득했습니다.");
+            GameManager.playerInstance.gold += dropMoney;
         }
 
         public void GiveExp()
