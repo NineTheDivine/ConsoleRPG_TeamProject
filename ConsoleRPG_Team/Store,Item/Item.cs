@@ -40,16 +40,16 @@ namespace ConsoleRPG_Team.Store_Item
 
         public readonly static Item[] items = new Item[10]
         {
-            new Item(1, "녹슨 검", 5, "녹슬고 이가 다 나간 검.", 100, ItemType.Weapon , ItemGrade.Common),
-            new Item(2, "강철 도끼", 8, "강철로 만든 무거운 도끼.", 150, ItemType.Weapon ,ItemGrade.Rare),
-            new Item(3, "마법 지팡이", 6, "마력을 품은 오래된 지팡이.", 200, ItemType.Weapon , ItemGrade.Epic ),
-            new Item(4, "엑스칼리버", 10, "전설에 등장하는 성검(聖劍)", 500, ItemType.Weapon , ItemGrade.Legendary),
-            new Item(5, "가죽 방어구", 3, "가죽으로 만든 방어구.", 80, ItemType.Armor , ItemGrade.Common),
-            new Item(6, "철제 방패", 5, "튼튼한 철로 만든 방패.", 120, ItemType.Armor , ItemGrade.Rare),
-            new Item(7, "마법 망토", 2, "마법 저항을 올려주는 망토.", 250, ItemType.Armor, ItemGrade.Epic),
-            new Item(8, "용의 비늘", 10, "용의 비늘로 만든 갑옷", 500, ItemType.Armor , ItemGrade.Legendary),
-            new UseableItem(9, "체력 포션", "체력을 50 회복시켜준다.", 30, ItemType.Consumable, 50, 0),
-            new UseableItem(10, "마나 포션", "마나를 30 회복시켜준다.", 30, ItemType.Consumable, 0, 30),
+            new Item(1, "녹슨 검", 1, "녹슬고 이가 다 나간 검.", 250, ItemType.Weapon , ItemGrade.Common),
+            new Item(2, "강철 도끼", 3, "강철로 만든 무거운 도끼.", 400, ItemType.Weapon ,ItemGrade.Rare),
+            new Item(3, "마법 지팡이", 6, "마력을 품은 오래된 지팡이.", 800, ItemType.Weapon , ItemGrade.Epic ),
+            new Item(4, "엑스칼리버", 10, "전설에 등장하는 성검(聖劍)", 1500, ItemType.Weapon , ItemGrade.Legendary),
+            new Item(5, "가죽 방어구", 1, "가죽으로 만든 방어구.", 300, ItemType.Armor , ItemGrade.Common),
+            new Item(6, "철제 방패", 3, "튼튼한 철로 만든 방패.", 500, ItemType.Armor , ItemGrade.Rare),
+            new Item(7, "마법 망토", 6, "마법 저항을 올려주는 망토.", 900, ItemType.Armor, ItemGrade.Epic),
+            new Item(8, "용의 비늘", 10, "용의 비늘로 만든 갑옷", 1750, ItemType.Armor , ItemGrade.Legendary),
+            new UseableItem(9, "체력 포션", "체력을 50 회복시켜준다.", 100, ItemType.Consumable, 50, 0),
+            new UseableItem(10, "마나 포션", "마나를 30 회복시켜준다.", 100, ItemType.Consumable, 0, 30),
         };
 
         public Item(int ID, string name, int pow, string description, int price, ItemType type, ItemGrade grade)

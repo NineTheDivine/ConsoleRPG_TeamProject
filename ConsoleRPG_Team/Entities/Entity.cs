@@ -13,7 +13,9 @@ namespace ConsoleRPG_Team.Entities
         public int atk { get; protected set; }
         public int health { get; set; }
         public int maxHealth { get; protected set; }
-        public bool isDead { get; protected set; } = false;
+        public int mana { get; set; } // 마나
+        public int maxMana { get; protected set; }
+        public bool isDead { get; set; } = false;
 
         public int exp { get; set; }
 

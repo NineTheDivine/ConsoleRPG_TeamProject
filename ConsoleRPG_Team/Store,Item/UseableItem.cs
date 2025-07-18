@@ -37,9 +37,13 @@ namespace ConsoleRPG_Team.Store_Item
             }
             if(manaAmount > 0)
             {
-                //마나 추가예정
-            }
-            
+                target.mana += this.manaAmount;
+                if(target.mana > target.maxMana)
+                {
+                    target.mana = target.maxMana;
+                }
+                Console.WriteLine($"마나가 {manaAmount}만큼 회복됐습니다! 현재마나{target.health}");
+            }    
         }
     }
 }

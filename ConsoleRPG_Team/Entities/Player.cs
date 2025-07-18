@@ -23,9 +23,10 @@ namespace ConsoleRPG_Team.Entities
     {
         public int? beforeHealth { get; set; } = null;
         public int def { get; protected set; }
+   
         private int BonusAtk { get; set; }
         private int BonusDef { get; set; }
-            
+
         public int gold { get; set; }
         public int criticalPro { get; set; } //치명타확률
         public int getExp { get; set; } // 전투후 획득 경험치 표시용
@@ -48,6 +49,8 @@ namespace ConsoleRPG_Team.Entities
             atk = 5;
             def = 5;
             health = 100;
+            mana = 50;
+            maxMana = 50;
             beforeHealth = null;
             playerClass = PlayerClass.None;
             maxHealth = 100;
@@ -74,10 +77,10 @@ namespace ConsoleRPG_Team.Entities
             int randomAtk = random.Next(atk - fluctuation, atk + fluctuation + 1);
 
             int criticalChance = random.Next(1, 101);
-            if(criticalPro > criticalChance)
+            if (criticalPro > criticalChance)
             {
                 Console.WriteLine("치명타!");
-                randomAtk = (int)(randomAtk * 1.6f);       
+                randomAtk = (int)(randomAtk * 1.6f);
             }
             return randomAtk;
         }
@@ -148,7 +151,7 @@ namespace ConsoleRPG_Team.Entities
                 item.use(this);
                 item.item_quantity -= 1;
 
-                if(item.item_quantity <= 0)
+                if (item.item_quantity <= 0)
                 {
                     inventory.RemoveAt(select - 1);
                 }
@@ -164,11 +167,11 @@ namespace ConsoleRPG_Team.Entities
         {
             Item selectItem = inventory[select - 1];
 
-            if(!selectItem.item_isEquiped)
+            if (!selectItem.item_isEquiped)
             {
-                foreach(Item item in inventory)
+                foreach (Item item in inventory)
                 {
-                    if(item.item_isEquiped && item.item_Type == selectItem.item_Type)
+                    if (item.item_isEquiped && item.item_Type == selectItem.item_Type)
                     {
                         item.item_isEquiped = false;
                         Console.WriteLine($"{item.item_Name}의 장착을 해제했습니다.");
@@ -259,13 +262,15 @@ namespace ConsoleRPG_Team.Entities
                         playerClass = PlayerClass.Warrior;
                         chooseClass = true;
                         maxHealth += 10;
-                        Console.WriteLine("최대체력 10 증가");
+                        Console.WriteLine("최대체력 10 증가 공격력 2증가");
+                        atk += 2;
                         break;
                     case 2:
                         playerClass = PlayerClass.Mage;
                         chooseClass = true;
-                        atk += 2;
-                        Console.WriteLine("공격력 2증가");
+                        atk += 1;
+                        maxMana += 20;
+                        Console.WriteLine("공격력 1증가 최대마나 +20");
                         break;
                     case 3:
                         playerClass = PlayerClass.Rogue;
@@ -282,11 +287,132 @@ namespace ConsoleRPG_Team.Entities
             }
         }
 
+        public void UseSkill(Entity target)
+        {
+            int attackMiss = random.Next(1, 101);
+            int skillDamage = 0;
+
+            if (isDead)
+                return;
+
+            if (attackMiss <= 10)
+            {
+                Console.WriteLine("{0:5} 의 공격!", this.name);
+                Console.WriteLine($"{target.name}은 공격을 회피했다!");
+            }
+
+            if (this.mana < 20)
+            {
+                Console.WriteLine($"{name}은 마나가 부족해서 스킬을 사용할수 없다.");
+                return;
+            }
+
+            mana -= 20;
+
+            switch (this.playerClass)
+            {
+                case PlayerClass.None:
+                    skillDamage = NoneSKill();
+
+                    target.health -= skillDamage;
+                    if (target.health <= 0)
+                    {
+                        target.health = 0;
+                        target.isDead = true;
+                    }
+                    Console.WriteLine("{0:5} 의 강하게 때리기!!", this.name);
+                    Console.WriteLine($"{target.name}의 체력을 {skillDamage} 깎았습니다.");
+
+                    break;
+
+                case PlayerClass.Warrior:
+                    skillDamage = WarriorSkill();
+
+                    target.health -= skillDamage;
+
+                    if (target.health <= 0)
+                    {
+                        target.health = 0;
+                        target.isDead = true;
+                    }
+
+                    Console.WriteLine("{0:5} 의 파워 스트라이크!!", this.name);
+                    Console.WriteLine($"{target.name}의 체력을 {skillDamage} 깎았습니다.");
+                    break;
+
+
+                case PlayerClass.Mage:
+                    skillDamage = MageSkill();
+
+                    target.health -= skillDamage;
+
+                    if (target.health <= 0)
+                    {
+                        target.health = 0;
+                        target.isDead = true;
+                    }
+
+                    Console.WriteLine("{0:5} 의 파이어볼!!", this.name);
+                    Console.WriteLine($"{target.name}의 체력을 {skillDamage} 깎았습니다.");
+
+                    break;
+
+                case PlayerClass.Rogue:
+                    skillDamage = RogueSkill();
+
+                    target.health -= skillDamage * 3;
+
+                    if (target.health <= 0)
+                    {
+                        target.health = 0;
+                        target.isDead = true;
+                    }
+                    Console.WriteLine("{0:5} 의 연속 찌르기!", this.name);
+
+                    Console.WriteLine($"{target.name}의 체력을 {skillDamage} 깎았습니다.");
+                    Console.WriteLine($"{target.name}의 체력을 {skillDamage} 깎았습니다.");
+                    Console.WriteLine($"{target.name}의 체력을 {skillDamage} 깎았습니다.");
+                    break;
+
+                default:
+                    return;
+
+            }
+        }
+
+        private int NoneSKill()
+        {
+            int dmg = (int)(AtkDiff() * 1.2f);
+            Console.WriteLine($"[강하게 때리기] {name}이 최선을 다해 공격을 했다.");
+            return dmg;
+        }
+
+        private int WarriorSkill()
+        {
+            int dmg = (int)(AtkDiff() * 2.0f);
+            Console.WriteLine($"[더블 스트라이크] {name}이 강력한 일격을 날렸다!");
+            return dmg;
+        }
+
+        private int MageSkill()
+        {
+            int dmg = (int)(AtkDiff() * 2.0f);
+            Console.WriteLine($"[파이어볼] {name}이 화염구를 발사했다!");
+            return dmg;
+        }
+
+        private int RogueSkill()
+        {
+            int dmg = (int)(AtkDiff() * 0.7f);
+            Console.WriteLine($"[백스탭] {name}이 적의 뒤를 찔렀다!");
+            return dmg;
+        }
+
         public void GetItem(Item item)
         {
             var sameItem = inventory.FirstOrDefault(i => i.item_ID == item.item_ID);
 
-            if(sameItem != null && item.item_Type == ItemType.Consumable)
+            if (sameItem != null && item.item_Type == ItemType.Consumable)
             {
                 sameItem.item_quantity += 1;
             }
