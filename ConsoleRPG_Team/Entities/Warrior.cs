@@ -18,7 +18,7 @@ namespace ConsoleRPG_Team.Entities
             chooseClass = true;
             maxHealth += 10;
             health += 10;
-            if(health >= maxHealth)
+            if(health > maxHealth)
                 health = maxHealth;
             atk += 2;
             Console.WriteLine("최대체력 10 증가 공격력 2증가");

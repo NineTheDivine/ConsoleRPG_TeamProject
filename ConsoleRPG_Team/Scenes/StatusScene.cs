@@ -12,7 +12,7 @@ namespace ConsoleRPG_Team.Scenes
         {
             this.inputstream = new string[]
                 {
-                    "0. 나가기"
+                    "0. 나가기", "1. 이름 변경"
                 };
         }
         public override SceneType OnSceneEnter()
@@ -32,13 +32,17 @@ namespace ConsoleRPG_Team.Scenes
             Console.WriteLine("방어력 : {0:-3}", GameManager.playerInstance.GetDef().ToString());
             Console.WriteLine("체 력 : {0:-3} / {1:-3}", GameManager.playerInstance.health.ToString(), GameManager.playerInstance.maxHealth.ToString());
             Console.WriteLine("마 나 : {0:-3} / {1:-3}", GameManager.playerInstance.mana.ToString(), GameManager.playerInstance.maxMana.ToString());
+            Console.WriteLine("치명타 확률 : {0:-6} %", GameManager.playerInstance.criticalPro.ToString());
             Console.WriteLine("Gold : {0:-6} G", GameManager.playerInstance.gold.ToString());
             //End Player info
 
-            int? input = AskInput(0, 0, this.inputstream);
+            int? input = AskInput(0, 1, this.inputstream);
             switch (input)
             {
                 case 0:
+                    return SceneType.StartScene;
+                case 1:
+                    GameManager.playerInstance.ChangeName();
                     return SceneType.StartScene;
                 default:
                     Console.WriteLine("Unexpected Behaviour at StatusScene");

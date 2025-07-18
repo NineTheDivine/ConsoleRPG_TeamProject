@@ -198,8 +198,6 @@ namespace ConsoleRPG_Team.Store_Item
                 int select = 0;
                 bool isSelect = int.TryParse(Console.ReadLine(), out select);
 
-                if(select == 0)
-                    break;
 
                 if (!isSelect)
                 {
@@ -207,6 +205,11 @@ namespace ConsoleRPG_Team.Store_Item
                     continue;
                 }
 
+                if (select == 0)
+                {
+                    break;
+                }
+                        
                 if (select > inven.Count || select < 0)
                 {
                     Console.WriteLine("잘못된 입력입니다.");

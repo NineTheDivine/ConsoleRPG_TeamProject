@@ -46,7 +46,7 @@ namespace ConsoleRPG_Team.Entities
             name = "주인공"; // 추후 입력해서 설정
             level = 1;
             atk = 5;
-            def = 5;
+            def = 1;
             health = 100;
             mana = 50;
             maxMana = 50;
@@ -128,12 +128,19 @@ namespace ConsoleRPG_Team.Entities
                 Console.WriteLine("장착 or 해제 하시고 싶은 아이템을 선택해 주세요. 나가려면 0을 눌러주세요.");
 
                 int select = 0;
+
                 bool isSelect = int.TryParse(Console.ReadLine(), out select);
+
+                if(!isSelect)
+                {
+                    Console.WriteLine("숫자를 입력해주세요.");
+                    continue;
+                }
 
                 if (select == 0)
                     break;
 
-                if (!isSelect || select > inventory.Count || select < 0)
+                if (select > inventory.Count || select < 0)
                 {
                     Console.WriteLine("잘못된 입력");
                     continue;
@@ -154,7 +161,7 @@ namespace ConsoleRPG_Team.Entities
         }
         public bool UseItemInBattle()
         {
-            var items = inventory.Where(item => item is UseableItem && item.item_Type == ItemType.Consumable ).ToList();
+            var items = inventory.Where(item => item is UseableItem && item.item_Type == ItemType.Consumable).ToList();
 
             if(items.Count == 0)
             {
@@ -168,8 +175,6 @@ namespace ConsoleRPG_Team.Entities
                 Console.WriteLine($"{i + 1}. {items[i].item_Name} (수량 : {items[i].item_quantity})");
             }
             Console.WriteLine("0. 취소");
-
-            int choice;
 
             do
             {
@@ -323,19 +328,59 @@ namespace ConsoleRPG_Team.Entities
             }
             else
             {
-                UseableItem newItem = new UseableItem()
+                if (item is UseableItem)
                 {
-                    item_ID = item.item_ID,
-                    item_Name = item.item_Name,
-                    item_Pow = item.item_Pow,
-                    item_Description = item.item_Description,
-                    item_Type = item.item_Type,
-                    item_Price = item.item_Price,
-                    item_Grade = item.item_Grade,
-                    item_quantity = 1
-                };
-                inventory.Add(newItem);
+                    UseableItem newItem = new UseableItem()
+                    {
+                        item_ID = item.item_ID,
+                        item_Name = item.item_Name,
+                        item_Pow = item.item_Pow,
+                        item_Description = item.item_Description,
+                        item_Type = item.item_Type,
+                        item_Price = item.item_Price,
+                        item_Grade = item.item_Grade,
+                        item_quantity = 1,
+                        healAmount = (item as UseableItem)?.healAmount ?? 0,
+                        manaAmount = (item as UseableItem)?.manaAmount ?? 0
+                    };
+                    inventory.Add(newItem);
+                }
+                else
+                {
+                    Item newItem = new Item()
+                    {
+                        item_ID = item.item_ID,
+                        item_Name = item.item_Name,
+                        item_Pow = item.item_Pow,
+                        item_Description = item.item_Description,
+                        item_Type = item.item_Type,
+                        item_Price = item.item_Price,
+                        item_Grade = item.item_Grade,
+                        item_quantity = 1
+                    };
+                    inventory.Add(newItem);
+                }
             }
+        }
+
+        public void ChangeName()
+        {
+            Console.WriteLine("바꿀 이름을 작성해주세요.");
+            string name = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Console.WriteLine("이름은 비어있을 수 없습니다.");
+                return;
+            }
+
+            if(name.Length > 10)
+            {
+                Console.WriteLine("이름이 너무 깁니다. 10자 이내로 줄여주세요.");
+                return;
+            }
+
+            this.name = name;
         }
     }
 }
