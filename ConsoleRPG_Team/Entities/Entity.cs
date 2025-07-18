@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleRPG_Team.Quests;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,44 +20,39 @@ namespace ConsoleRPG_Team.Entities
 
         public int exp { get; set; }
 
-
-        
-
         protected Random random = new Random();
 
-        public virtual void Attack(Entity target)
+        public virtual void Attack(Entity target, int? damage = null, bool isSkill = false)
         {
-            int attackMiss = random.Next(1, 101);
-
             if (isDead)
                 return;
-            if (attackMiss <= 10)
-            {
+            if (damage == null)
+                damage = AtkDiff();
+            if (!isSkill)
                 Console.WriteLine("{0:5} 의 공격!", this.name);
-                Console.WriteLine($"{target.name}은 공격을 회피했다!");
-            }
-            else
-            {
-                int randomAtk = AtkDiff();
-                if(randomAtk == 0)
-                {
-                    Console.WriteLine("{0:5} 의 공격!", this.name);
-                    Console.WriteLine($"{target.name}은 흠도 나지 않았다!");
-                }
-                else
-                {
-                    target.health -= randomAtk;
-                    if (target.health <= 0)
-                    {
-                        target.health = 0;
-                        target.isDead = true;
 
-                    }
-                    Console.WriteLine("{0:5} 의 공격!", this.name);
-                    Console.WriteLine($"{target.name}의 체력을 {randomAtk} 깎았습니다.");
-                }       
-            }       
+            int attackMiss = random.Next(1, 101);
+            if (attackMiss <= 10)
+                Console.WriteLine($"{target.name}은 공격을 회피했다!");
+            else
+                target.TakeDamage((int)damage);
+
          }
+        public virtual void TakeDamage(int damage)
+        {
+            if (damage == 0)
+            {
+                Console.WriteLine($"{this.name}은 흠도 나지 않았다!");
+                return;
+            }
+            this.health -= damage;
+            if (this.health <= 0)
+            {
+                this.health = 0;
+                this.isDead = true;
+            }
+            Console.WriteLine($"{this.name}의 체력을 {damage} 깎았습니다.");
+        }
 
         public virtual int AtkDiff()
         {
