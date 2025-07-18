@@ -29,7 +29,7 @@ namespace ConsoleRPG_Team.Scenes
             GameManager.waveEnemyCount = null;
 
             Console.WriteLine();
-            Console.WriteLine("Lv.{0:D2} Chad ( {1:4} )", GameManager.playerInstance.level, /*Need to be fixed */GameManager.playerInstance.name);
+            Console.WriteLine("Lv.{0:D2} {1:5} ( {2:8} )", GameManager.playerInstance.level, GameManager.playerInstance.name, GameManager.playerInstance.playerClass.ToString());
             Console.WriteLine("HP : {0:-3} -> {1:-3}", GameManager.playerInstance.beforeHealth.ToString(), GameManager.playerInstance.health.ToString());
             GameManager.playerInstance.beforeHealth = null;
             int? input = AskInput(0, 0, this.inputstream);
