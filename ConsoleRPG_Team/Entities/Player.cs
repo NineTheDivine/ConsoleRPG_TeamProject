@@ -226,7 +226,7 @@ namespace ConsoleRPG_Team.Entities
             }
         }
 
-        private void UpdateStat()
+        public void UpdateStat()
         {
             BonusAtk = 0;
             BonusDef = 0;
