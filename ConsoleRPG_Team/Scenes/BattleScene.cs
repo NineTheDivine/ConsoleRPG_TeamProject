@@ -37,42 +37,22 @@ namespace ConsoleRPG_Team.Scenes
                 Console.WriteLine("0 Length Enemy Wave at BattleScene");
                 return SceneType.Quit;
             }
-            do
+            while(true)
             {
-                //Header
-                Console.ForegroundColor = ConsoleColor.Magenta;
-                Console.WriteLine("Battle!!");
-                Console.ResetColor();
-                Console.WriteLine();
-
-                //Enemy Info
-                foreach (Enemy enemy in enemyWave.spawnEnemies)
-                {
-                    if (enemy.isDead)
-                    {
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
-                        Console.WriteLine("Lv.{0:D2} {1:8} Dead", enemy.level, enemy.name);
-                        Console.ResetColor();                  
-                    }  
-                    else
-                        Console.WriteLine("Lv.{0:D2} {1:8} HP {2,-3}", enemy.level, enemy.name, enemy.health.ToString());
-                }
-
-                //Player Info
-                Console.WriteLine("[ 내 정보 ]");
-                Console.WriteLine("Lv.{0:D2} {1:5} ( {2:8} )", GameManager.playerInstance.level, GameManager.playerInstance.name, GameManager.playerInstance.playerClass.ToString());
-                Console.WriteLine("HP : {0:-3} / {1:-3}", GameManager.playerInstance.health.ToString(), GameManager.playerInstance.maxHealth.ToString());
-                Console.WriteLine("MP : {0:-3} / {1:-3}", GameManager.playerInstance.mana.ToString(), GameManager.playerInstance.maxMana.ToString());
-
-                //Player turn
+        
                 int? input = null;
                 do
                 {
+                    //Header + Player + Enemy Info
+                    _PrintEnemies("Battle", false);
+
+                    //Player turn
                     input = AskInput(1, 3, this.inputstream);
+
                     //Basic Attack
                     if (input == 1)
                     {
-                        int? target = _PrintEnemies();
+                        int? target = _PrintEnemies("기본 공격!!");
                         //Cancel
                         if (target == 0)
                             input = null;
@@ -94,7 +74,7 @@ namespace ConsoleRPG_Team.Scenes
 
 
                     //OnSkill
-                    else if (input == 2) //테스트
+                    else if (input == 2)
                     {
                         int? target = null;
                         List<Enemy> targets = new List<Enemy>();
@@ -102,6 +82,7 @@ namespace ConsoleRPG_Team.Scenes
                         //Mage attacks all with skill
                         if (GameManager.playerInstance.playerClass == PlayerClass.Mage)
                         {
+                            _PrintEnemies("스킬 시전!!", false);
                             int? confirm = AskInput(0, 1, new string[] { "1. 파이어볼 시전", "0. 취소" });
                             if (confirm == 1)
                                 foreach (Enemy enemy in this.enemyWave.spawnEnemies)
@@ -115,7 +96,8 @@ namespace ConsoleRPG_Team.Scenes
                         //if not, select one
                         else
                         {
-                            target = _PrintEnemies();
+                            target = _PrintEnemies("스킬 시전!!", true);
+                            
                             if (target != 0)
                                 targets.Add(this.enemyWave.spawnEnemies[(int)target - 1]);
                         }
@@ -191,21 +173,40 @@ namespace ConsoleRPG_Team.Scenes
                 if (GameManager.playerInstance.isDead)
                     return SceneType.GameOverScene;
 
-            } while (true);
+            }
         }
 
-        private int? _PrintEnemies()
+        private void _PrintPlayerInfo()
+        {
+            Console.WriteLine("[ 내 정보 ]");
+            Console.WriteLine("Lv.{0:D2} {1:5} ( {2:8} )", GameManager.playerInstance.level, GameManager.playerInstance.name, GameManager.playerInstance.playerClass.ToString());
+            Console.WriteLine("HP : {0:-3} / {1:-3}", GameManager.playerInstance.health.ToString(), GameManager.playerInstance.maxHealth.ToString());
+            Console.WriteLine("MP : {0:-3} / {1:-3}", GameManager.playerInstance.mana.ToString(), GameManager.playerInstance.maxMana.ToString());
+        }
+
+        private int? _PrintEnemies(string actionStream = "",  bool isTarget = true)
         {
             int? target = null;
+            Console.WriteLine();
             do
             {
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine(actionStream);
+                Console.WriteLine();
+                Console.ResetColor();
+
+                _PrintPlayerInfo();
+
                 Console.WriteLine();
                 int enemyindex = 1;
                 foreach (Enemy enemy in enemyWave.spawnEnemies)
                 {
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.Write("{0:2}. ", enemyindex.ToString());
-                    Console.ResetColor();
+                    if (isTarget)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.Write("{0:2}. ", enemyindex.ToString());
+                        Console.ResetColor();
+                    }
                     if (enemy.isDead)
                     {
                         Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -216,6 +217,9 @@ namespace ConsoleRPG_Team.Scenes
                         Console.WriteLine("Lv.{0:D2} {1:8} HP {2,-3}", enemy.level, enemy.name, enemy.health.ToString());
                     enemyindex++;
                 }
+                Console.WriteLine();
+                if (!isTarget)
+                    return null;
 
                 target = AskInput(0, (int)GameManager.waveEnemyCount, askstream, "대상을 선택해주세요.");
                 if (target != null && target != 0 && enemyWave.spawnEnemies[(int)target - 1].isDead)
