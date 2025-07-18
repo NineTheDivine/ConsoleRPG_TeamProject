@@ -23,7 +23,7 @@ namespace ConsoleRPG_Team.Scenes
             this.enemyWave = ew;
             this._enemyCount = enemyWave.spawnEnemies.Count;
             GameManager.waveEnemyCount = this._enemyCount;
-            this.inputstream = new string[2] { "1. 공격" , "2. 스킬사용" };
+            this.inputstream = new string[3] { "1. 공격" , "2. 스킬사용" , "3. 아이템 사용"};
         }
 
         public override SceneType OnSceneEnter()
@@ -67,7 +67,7 @@ namespace ConsoleRPG_Team.Scenes
                 int? input = null;
                 do
                 {
-                    input = AskInput(1, 2, this.inputstream);
+                    input = AskInput(1, 3, this.inputstream);
                     if (input == 1)
                     {
                         int? target = null;
@@ -182,6 +182,11 @@ namespace ConsoleRPG_Team.Scenes
                                 continue;
                         }
                     } // 테스트
+                    else if(input == 3) // 아이템 사용
+                    {
+                        if(!GameManager.playerInstance.UseItemInBattle())
+                        input = null;
+                    }
                 } while (input == null);
                 //Player turn end
 

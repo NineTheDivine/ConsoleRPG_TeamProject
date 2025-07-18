@@ -142,6 +142,43 @@ namespace ConsoleRPG_Team.Entities
                 }
             }
         }
+        public bool UseItemInBattle()
+        {
+            var items = inventory.Where(item => item is UseableItem).ToList();
+
+            if(items.Count == 0)
+            {
+                Console.WriteLine("사용 가능한 아이템이 없습니다.");
+                return false;
+            }
+
+            Console.WriteLine("사용할 아이템을 선택하세요.");
+            for(int i = 0; i < items.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {items[i].item_Name} (수량 : {items[i].item_quantity})");
+            }
+            Console.WriteLine("0. 취소");
+
+            int choice;
+
+            do
+            {
+
+                Console.WriteLine("번호를 입력하세요.");
+                int select;
+                bool isNum = int.TryParse(Console.ReadLine(), out select);
+                if (!isNum || select == 0)
+                {
+                    Console.WriteLine("아이템 사용을 취소합니다.");
+                    return false;
+                }
+                else if (select >= 1 && select <= items.Count)
+                {
+                    UseConsumable(inventory.IndexOf(items[select - 1]) + 1);
+                    return true;
+                }
+            } while (true);     
+        }
 
         private void UseConsumable(int select)
         {
