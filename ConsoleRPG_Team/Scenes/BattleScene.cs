@@ -61,7 +61,7 @@ namespace ConsoleRPG_Team.Scenes
                 Console.WriteLine("[ 내 정보 ]");
                 Console.WriteLine("Lv.{0:D2} Chad ( {1:4} )", GameManager.playerInstance.level, /*Need to be fixed */GameManager.playerInstance.name);
                 Console.WriteLine("HP : {0:-3} / {1:-3}", GameManager.playerInstance.health.ToString(), GameManager.playerInstance.maxHealth.ToString());
-                Console.WriteLine("MP : {0:-3}", GameManager.playerInstance.mana.ToString());
+                Console.WriteLine("MP : {0:-3} / {1:-3}", GameManager.playerInstance.mana.ToString(), GameManager.playerInstance.maxMana.ToString());
 
                 //Player turn
                 int? input = null;
