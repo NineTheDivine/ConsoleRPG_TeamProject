@@ -18,8 +18,47 @@ namespace ConsoleRPG_Team.Store_Item
 
         public Store()
         {
-            Item item = new Item();
-            storeItems.AddRange(Item.items);
+            StoreRandomItem();
+        }
+
+        private void StoreRandomItem()
+        {
+            storeItems.Clear();
+
+            storeItems.Add(Item.items[0]);
+            storeItems.Add(Item.items[1]);
+
+            int maxCount = 8;
+
+            List<Item> allItems = Item.items.ToList();
+
+            for (int i = 0; i < maxCount; i++)
+            {
+                int ran = random.Next(1, 101);
+                ItemGrade selectedGrade;
+
+                if (ran <= 50)
+                    selectedGrade = ItemGrade.Common;
+                else if (ran <= 80)
+                    selectedGrade = ItemGrade.Rare;
+                else if (ran <= 95)
+                    selectedGrade = ItemGrade.Epic;
+                else
+                    selectedGrade = ItemGrade.Legendary;
+
+                var gradeItems = allItems.Where(item => item.item_Grade == selectedGrade).ToList();
+
+                if (gradeItems.Count > 0)
+                {
+                    int index = random.Next(0, gradeItems.Count);
+                    storeItems.Add(gradeItems[index]);
+                    allItems.Remove(gradeItems[index]);
+                }
+                else
+                {
+                    i--; 
+                }
+            }
         }
         public void ShowItems()
         {
